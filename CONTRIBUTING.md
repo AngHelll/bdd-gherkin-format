@@ -1,7 +1,7 @@
 # Contributing to BDD Gherkin Format
 
-Companion ForgeOne extension: **Format Document** for `.feature` files only.  
-**Never** add binding index, LSP, matching, Coach, or test run here — that is Guardian / Pilot / Jarvis.
+Companion ForgeOne extension: **presentation** for `.feature` files (Format Document + TextMate syntax).  
+**Never** add binding index, LSP, matching, Coach, bound/unbound colors, or test run here — that is Guardian / Pilot / Jarvis.
 
 ## Prerequisites
 
@@ -36,6 +36,7 @@ Press **F5** to launch the Extension Development Host.
 |-------|------|
 | `src/core/` | Pure formatter — **no** `vscode` imports |
 | `src/providers/` | VS Code formatting provider |
+| `syntaxes/` | TextMate grammar (lexical scopes only) |
 | `src/extension.ts` | Activation |
 
 ## Workflow (ForgeOne)
@@ -47,4 +48,4 @@ Press **F5** to launch the Extension Development Host.
 
 ## Anti-scope (permanent)
 
-No binding index, step matching, glue globs, diagnostics for unbound steps, generate binding, or run tests.
+No binding index, step matching, glue globs, diagnostics for unbound steps, generate binding, run tests, or semantic colors for bound/unbound (Guardian visual language).

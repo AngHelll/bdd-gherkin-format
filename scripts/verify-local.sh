@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-SPEC_HINT="${1:-mvp-format-v0.1.0.md}"
+SPEC_HINT="${1:-grammar-syntax-v0.2.0.md}"
 
 echo "== BDD Gherkin Format verify:local (Capa A) =="
 
@@ -42,12 +42,10 @@ echo ""
 echo "  [ ] 2. Abrir .feature CON Guardian y SIN Cucumber Official / alexkrechik"
 echo "         p.ej. bdd-guardian/samples/binding-demo"
 echo ""
-echo "  [ ] 3. Format Document → indent + tablas alineadas; sin diagnostics propios"
+echo "  [ ] 3. Format Document + syntax colors (keywords/comments/steps);"
+echo "         sin diagnostics de bindings propios de Format"
 echo ""
-if [[ -n "$SPEC_HINT" ]]; then
-  echo "  Spec: docs-internal/specs/$SPEC_HINT"
-  echo ""
-fi
+echo "  Spec: docs-internal/specs/$SPEC_HINT (grammar: grammar-syntax-v0.2.0.md)"
 echo "  Cuando OK: di \"verificado, ship\" o pide más cambios."
 echo "  Git (commit/push/tag): solo con orden explícita."
 echo ""

@@ -1,51 +1,38 @@
 # BDD Gherkin Format — Roadmap
 
-> Companion de [BDD Guardian](https://github.com/AngHelll/bdd-guardian): **solo** Format Document en `.feature`.  
-> Ideación: [docs/IDEATION.md](./docs/IDEATION.md) · Spec MVP: [docs-internal/specs/mvp-format-v0.1.0.md](./docs-internal/specs/mvp-format-v0.1.0.md)
+> Companion de [BDD Guardian](https://github.com/AngHelll/bdd-guardian): **presentación** `.feature` (layout + syntax).  
+> Ideación: [docs/IDEATION.md](./docs/IDEATION.md) · Specs: [docs-internal/specs/](./docs-internal/specs/)
 
 ## At a glance
 
 | Status | Item |
 |--------|------|
-| ✅ Shipped | **v0.1.0** — indent + table align + Rule/DocString basics |
-| 🎯 Next | Dogfood 30d / mantenimiento |
-| 📋 Gate | *alineado* (post-ship) |
-| 🏁 Goal | Format `.feature` sin segundo indexador (stack ForgeOne sin Cucumber oficial) |
+| ✅ Shipped | **v0.1.0** — indent + table align |
+| ✅ Shipped | **v0.2.0** — TextMate syntax highlighting (presentation mute) |
+| 🎯 Next | Dogfood 30d / settings de layout opcionales |
+| 🏁 Goal | Look del `.feature` sin segundo indexador |
 
-**No hace:** matching, F12, generate, Coach, run tests (eso es Guardian / Pilot).
-
-## Plan MVP v0.1.0 — verificado
-
-| # | Item | Status |
-|---|------|--------|
-| A | Clasificador + indent | ✅ |
-| B | Alinear tablas `\|…\|` | ✅ |
-| C | DocumentFormatting + Selection | ✅ |
-| D | Fixtures + README ForgeOne | ✅ |
-| Capas A–C | verify:local · dogfood corpus · publish | ✅ |
-
-## Differentiator
-
-Format **mudo**: no indexa bindings → no pelea con Guardian ni con Cucumber oficial por el mapa.
+**No hace:** matching, F12, generate, Coach, run tests, colores bound/unbound (Guardian).
 
 ## Relación ForgeOne
 
 | Extensión | Rol |
 |-----------|-----|
-| **bdd-gherkin-format** | Layout `.feature` |
+| **bdd-gherkin-format** | Layout + syntax colors |
 | bdd-guardian | Mapa step ↔ binding |
 | bdd-pilot | Ejecución |
 | bdd-jarvis | Insights |
 
 Mental pack: [docs/EXTENSION_PACK.md](./docs/EXTENSION_PACK.md)
 
-## Post-MVP
+## Post-v0.2
 
 | Item | Notes |
 |------|-------|
-| i18n keywords | Solo si dogfood lo pide |
-| Published extensionPack VSIX | Opcional; hoy recommendation mental |
+| Layout settings (`indentSize`, …) | Opcional v0.3 |
+| i18n keywords (grammar + classifier) | Solo si dogfood lo pide |
+| extensionPack VSIX | Opcional |
 
 ---
 
-*Moved from bdd-guardian `docs-internal/ideas/` — 2026-09-11 · MVP shipped 2026-09-11*
+*MVP 2026-09-11 · presentation grammar 2026-09-11*
