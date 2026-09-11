@@ -1,0 +1,6 @@
+# Copy to maintainer.local (gitignored) and set your Marketplace Manage PAT.
+# https://dev.azure.com/anghelll/_usersSettings/tokens
+#
+# VSCE_PAT=...
+
+VSCE_PAT=

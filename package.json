@@ -1,0 +1,76 @@
+{
+  "name": "bdd-gherkin-format",
+  "displayName": "BDD Gherkin Format",
+  "description": "Mute Format Document for .feature files — indent + align tables. No binding index. Companion to BDD Guardian.",
+  "version": "0.1.0",
+  "publisher": "anghelll",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1a2332",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=20"
+  },
+  "categories": [
+    "Formatters",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "gherkin",
+    "feature",
+    "bdd",
+    "cucumber",
+    "format",
+    "formatter",
+    "reqnroll",
+    "specflow"
+  ],
+  "activationEvents": [
+    "onLanguage:gherkin",
+    "onLanguage:feature",
+    "workspaceContains:**/*.feature"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "BDD Gherkin Format",
+      "properties": {
+        "bddGherkinFormat.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Format Document / Format Selection for Gherkin .feature files."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext .ts",
+    "pretest": "npm run compile",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "package": "npx @vscode/vsce package --no-dependencies -o bdd-gherkin-format.vsix",
+    "verify:local": "bash scripts/verify-local.sh",
+    "publish:check": "bash scripts/publish-check.sh",
+    "publish:marketplace": "bash scripts/publish-marketplace.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vscode/vsce": "^2.24.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AngHelll/bdd-gherkin-format.git"
+  }
+}
