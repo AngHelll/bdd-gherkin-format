@@ -1,13 +1,27 @@
 import * as vscode from 'vscode';
-import { formatGherkin } from '../core/formatGherkin';
+import { formatGherkin, type FormatOptions } from '../core/formatGherkin';
 
 function isEnabled(): boolean {
   return vscode.workspace.getConfiguration('bddGherkinFormat').get<boolean>('enabled', true);
 }
 
-function fullDocumentEdit(document: vscode.TextDocument): vscode.TextEdit[] {
+export function resolveWorkspaceFormatOptions(
+  editorOptions: vscode.FormattingOptions
+): FormatOptions {
+  const config = vscode.workspace.getConfiguration('bddGherkinFormat');
+  const indentSize = config.get<number | null>('indentSize', null);
+  return {
+    indentSize: indentSize ?? editorOptions.tabSize ?? 2,
+    alignNumbers: config.get<boolean>('alignNumbers', true),
+  };
+}
+
+function fullDocumentEdit(
+  document: vscode.TextDocument,
+  formatOptions: FormatOptions
+): vscode.TextEdit[] {
   const original = document.getText();
-  const formatted = formatGherkin(original);
+  const formatted = formatGherkin(original, formatOptions);
   if (formatted === original) {
     return [];
   }
@@ -20,10 +34,12 @@ function fullDocumentEdit(document: vscode.TextDocument): vscode.TextEdit[] {
 
 function rangeEdit(
   document: vscode.TextDocument,
-  range: vscode.Range
+  range: vscode.Range,
+  formatOptions: FormatOptions
 ): vscode.TextEdit[] {
   const original = document.getText();
   const formatted = formatGherkin(original, {
+    ...formatOptions,
     range: {
       startLine: range.start.line,
       endLine: range.end.line,
@@ -45,22 +61,24 @@ export class GherkinFormattingProvider
   implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider
 {
   provideDocumentFormattingEdits(
-    document: vscode.TextDocument
+    document: vscode.TextDocument,
+    options: vscode.FormattingOptions
   ): vscode.ProviderResult<vscode.TextEdit[]> {
     if (!isEnabled()) {
       return [];
     }
-    return fullDocumentEdit(document);
+    return fullDocumentEdit(document, resolveWorkspaceFormatOptions(options));
   }
 
   provideDocumentRangeFormattingEdits(
     document: vscode.TextDocument,
-    range: vscode.Range
+    range: vscode.Range,
+    options: vscode.FormattingOptions
   ): vscode.ProviderResult<vscode.TextEdit[]> {
     if (!isEnabled()) {
       return [];
     }
-    return rangeEdit(document, range);
+    return rangeEdit(document, range, resolveWorkspaceFormatOptions(options));
   }
 }
 

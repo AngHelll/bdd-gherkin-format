@@ -9,7 +9,8 @@
 |--------|------|
 | ✅ Shipped | **v0.1.0** — indent + table align |
 | ✅ Shipped | **v0.2.0** — TextMate syntax highlighting (presentation mute) |
-| 🎯 Next | Dogfood 30d / settings de layout opcionales |
+| ✅ Shipped | **v0.3.0** — dialecto EN, language config, indentSize / alignNumbers |
+| 🎯 Next | Dogfood 30d / outline + snippets estructurales |
 | 🏁 Goal | Look del `.feature` sin segundo indexador |
 
 **No hace:** matching, F12, generate, Coach, run tests, colores bound/unbound (Guardian).
@@ -25,11 +26,13 @@
 
 Mental pack: [docs/EXTENSION_PACK.md](./docs/EXTENSION_PACK.md)
 
-## Post-v0.2
+## Post-v0.3
 
 | Item | Notes |
 |------|-------|
-| Layout settings (`indentSize`, …) | Opcional v0.3 |
+| Outline / sticky scroll | Estructura del archivo, no mapa |
+| Snippets estructurales | Feature / Scenario / Outline — sin steps indexados |
+| Pretty blank-line policy | Solo si dogfood lo pide |
 | i18n keywords (grammar + classifier) | Solo si dogfood lo pide |
 | extensionPack VSIX | Opcional |
 

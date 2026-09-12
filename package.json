@@ -2,7 +2,7 @@
   "name": "bdd-gherkin-format",
   "displayName": "BDD Gherkin Format",
   "description": "Mute presentation for .feature files — Format Document + syntax highlighting. No binding index. Companion to BDD Guardian.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "anghelll",
   "icon": "icon.png",
   "galleryBanner": {
@@ -54,7 +54,9 @@
     "configurationDefaults": {
       "[gherkin]": {
         "editor.defaultFormatter": "anghelll.bdd-gherkin-format",
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
       }
     },
     "configuration": {
@@ -64,6 +66,18 @@
           "type": "boolean",
           "default": true,
           "description": "Enable Format Document / Format Selection for Gherkin .feature files."
+        },
+        "bddGherkinFormat.indentSize": {
+          "type": ["number", "null"],
+          "default": null,
+          "minimum": 1,
+          "maximum": 8,
+          "description": "Spaces per indent unit. null uses the editor tab size (Gherkin defaults to 2)."
+        },
+        "bddGherkinFormat.alignNumbers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Right-align numeric table cells (integers and decimals), like Cucumber Official / Excel."
         }
       }
     }

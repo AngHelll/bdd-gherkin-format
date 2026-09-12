@@ -8,5 +8,5 @@ Feature: Calculator
     Then the result is 3
     Examples:
       | a  | b  | sum |
-      | 1  | 2  | 3   |
-      | 10 | 20 | 30  |
+      |  1 |  2 |   3 |
+      | 10 | 20 |  30 |

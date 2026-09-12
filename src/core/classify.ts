@@ -18,13 +18,14 @@ export type LineKind =
   | 'docstring_fence'
   | 'other';
 
-const FEATURE = /^Feature\b/i;
+/** Official EN dialect + Reqnroll/SpecFlow Scenario Template. */
+const FEATURE = /^(Feature|Business Need|Ability)\b/i;
 const RULE = /^Rule\b/i;
 const BACKGROUND = /^Background\b/i;
-const SCENARIO_OUTLINE = /^Scenario\s+Outline\b/i;
-const SCENARIO = /^Scenario\b/i;
-const EXAMPLES = /^Examples\b/i;
-const STEP = /^(Given|When|Then|And|But)\b/i;
+const SCENARIO_OUTLINE = /^Scenario\s+(Outline|Template)\b/i;
+const EXAMPLES = /^(Examples|Scenarios)\b/i;
+const SCENARIO = /^(Scenario|Example)\b/i;
+const STEP = /^(?:Given|When|Then|And|But|\*)(?:\s|$)/i;
 const TAG = /^@\S/;
 const TABLE = /^\|/;
 const DOCSTRING_FENCE = /^("""|```)/;

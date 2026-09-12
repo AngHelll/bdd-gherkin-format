@@ -48,3 +48,4 @@ Secondary: recommendation cruzada / pack mental — Format + Guardian + Pilot.
 
 - v0.1.0 format — ✅ shipped
 - v0.2.0 syntax grammar — ✅ spec + implement
+- v0.3.0 dialect EN + language config + layout settings — ✅ shipped

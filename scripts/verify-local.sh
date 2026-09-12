@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-SPEC_HINT="${1:-grammar-syntax-v0.2.0.md}"
+SPEC_HINT="${1:-layout-dialect-v0.3.0.md}"
 
 echo "== BDD Gherkin Format verify:local (Capa A) =="
 

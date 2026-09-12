@@ -10,7 +10,7 @@ VS Code / Cursor extension: **mute presentation** for `.feature` files —
 | | |
 |--|--|
 | **Marketplace** | `anghelll.bdd-gherkin-format` |
-| **Version** | **0.2.0** |
+| **Version** | **0.3.0** |
 | **Publisher** | anghelll |
 
 ## Why a separate extension?
@@ -45,9 +45,11 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 
 ## What it does
 
-- Indent Feature / Rule / Scenario / steps / Examples / tables (2-space units)
-- Align consecutive `|…|` table columns (padding only)
+- Indent Feature / Rule / Scenario / steps / Examples / tables (2-space default; `indentSize` or editor tab size)
+- Official EN synonyms: `Example`, `Scenario Template`, `Scenarios`, `Business Need`, `Ability`, `*`
+- Align consecutive `|…|` table columns (padding only; numeric cells right-aligned; `\|` stays in-cell)
 - Format Selection
+- Editor language config: fold by indent, Enter after keywords, `#` comments, `@tag` / `<placeholder>` word pattern
 - TextMate highlighting: structural keywords, step keywords, `#` comments, `@tags`, tables, quotes, DocString fences
 - Language id `gherkin` for `.feature` (works even without Guardian)
 
@@ -57,13 +59,15 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 - Autocomplete, diagnostics, generate binding, run tests
 - LSP / undefined-step / glue globs
 - Custom color palette (uses your VS Code theme scopes)
-- Full i18n Gherkin keyword sets (English keywords in v0.2)
+- Full i18n Gherkin keyword sets (English dialect + synonyms in v0.3)
 
 ## Settings
 
 | Setting | Default | Description |
 |---------|---------|-------------|
 | `bddGherkinFormat.enabled` | `true` | Enable Format Document / Selection |
+| `bddGherkinFormat.indentSize` | `null` | Spaces per indent unit. `null` uses the editor tab size (Gherkin defaults to 2) |
+| `bddGherkinFormat.alignNumbers` | `true` | Right-align numeric table cells (integers and decimals) |
 
 ## Develop
 

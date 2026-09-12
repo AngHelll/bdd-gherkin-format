@@ -38,4 +38,13 @@ describe('gherkin TextMate grammar', () => {
     expect(raw).toMatch(/entity\.name\.tag/);
     expect(raw).not.toMatch(/bound|unbound|ambiguous|orphan/i);
   });
+
+  it('highlights official EN synonyms', () => {
+    const raw = readFileSync(grammarPath, 'utf8');
+    expect(raw).toMatch(/Feature\|Business Need\|Ability/);
+    expect(raw).toMatch(/Scenario Outline\|Scenario Template/);
+    expect(raw).toMatch(/Examples\|Scenarios/);
+    expect(raw).toMatch(/Scenario\|Example/);
+    expect(raw).toMatch(/Given\|When\|Then\|And\|But\|\\\\\*/);
+  });
 });

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0] — 2026-09-12
+
+### Added
+
+- Official EN dialect synonyms in classifier + TextMate grammar: `Example`, `Scenario Template`, `Scenarios`, `Business Need`, `Ability`, `*`
+- Language configuration: off-side folding, indent / on-Enter after keywords, word pattern for `@tags` and `<placeholders>`
+- Settings `bddGherkinFormat.indentSize` (null → editor tab size) and `bddGherkinFormat.alignNumbers` (default true)
+- `[gherkin]` defaults `editor.tabSize: 2` and `editor.insertSpaces: true`
+
+### Changed
+
+- Numeric table cells are right-aligned by default (Cucumber Official / Excel)
+- Table split keeps escaped `\|` inside a cell
+
 ## [0.2.0] — 2026-09-11
 
 ### Added

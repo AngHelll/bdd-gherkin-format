@@ -6,6 +6,7 @@
 import { alignTableBlock } from './alignTables';
 import { classifyLine, indentLevelFor, stripIndent, type LineKind } from './classify';
 
+export const DEFAULT_INDENT_SIZE = 2;
 export const INDENT_UNIT = '  ';
 
 export interface FormatRange {
@@ -18,13 +19,24 @@ export interface FormatRange {
 export interface FormatOptions {
   /** When set, only rewrite lines in this range (table align scoped to range). */
   range?: FormatRange;
+  /** Spaces per indent unit. Default 2 (Gherkin reference). */
+  indentSize?: number;
+  /** Right-align numeric table cells. Default true (Cucumber Official / Excel). */
+  alignNumbers?: boolean;
 }
 
-function applyIndent(level: number, content: string): string {
+export function resolveIndentSize(indentSize?: number): number {
+  if (indentSize == null || !Number.isFinite(indentSize) || indentSize < 1) {
+    return DEFAULT_INDENT_SIZE;
+  }
+  return Math.min(8, Math.floor(indentSize));
+}
+
+function applyIndent(level: number, content: string, unit: string): string {
   if (content === '') {
     return '';
   }
-  return INDENT_UNIT.repeat(level) + content;
+  return unit.repeat(level) + content;
 }
 
 interface WorkLine {
@@ -128,6 +140,9 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
     levels[i] = indentLevelFor(kind, { inRule, inDocString: false, docStringBase });
   }
 
+  const indentSize = resolveIndentSize(options.indentSize);
+  const unit = ' '.repeat(indentSize);
+  const alignNumbers = options.alignNumbers ?? true;
   const alignedContent = lines.map((l) => l.content);
 
   let blockStart = -1;
@@ -141,7 +156,7 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
     const touchesRange = blockEnd >= rangeStart && blockStart <= rangeEnd;
     if (touchesRange) {
       const slice = alignedContent.slice(blockStart, endExclusive);
-      const aligned = alignTableBlock(slice);
+      const aligned = alignTableBlock(slice, { alignNumbers });
       for (let k = 0; k < aligned.length; k++) {
         alignedContent[blockStart + k] = aligned[k];
       }
@@ -178,7 +193,7 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
       continue;
     }
 
-    out.push(applyIndent(levels[i], alignedContent[i]));
+    out.push(applyIndent(levels[i], alignedContent[i], unit));
   }
 
   let result = out.join('\n');

@@ -35,7 +35,7 @@
       }
     },
     "feature": {
-      "match": "^(\\s*)(Feature)(:)(.*)$",
+      "match": "^(\\s*)(Feature|Business Need|Ability)(:)(.*)$",
       "captures": {
         "2": { "name": "keyword.control.feature.gherkin" },
         "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
@@ -59,7 +59,7 @@
       }
     },
     "scenario_outline": {
-      "match": "^(\\s*)(Scenario Outline)(:)(.*)$",
+      "match": "^(\\s*)(Scenario Outline|Scenario Template)(:)(.*)$",
       "captures": {
         "2": { "name": "keyword.control.scenario.gherkin" },
         "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
@@ -75,7 +75,7 @@
       }
     },
     "examples": {
-      "match": "^(\\s*)(Examples)(:)(.*)$",
+      "match": "^(\\s*)(Examples|Scenarios)(:)(.*)$",
       "captures": {
         "2": { "name": "keyword.control.examples.gherkin" },
         "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },

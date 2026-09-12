@@ -14,6 +14,33 @@
   ],
   "surroundingPairs": [
     ["\"", "\""],
-    ["'", "'"]
+    ["'", "'"],
+    ["<", ">"]
+  ],
+  "wordPattern": "(-?\\d*\\.\\d\\w*)|(@[\\w.-]+)|(<[^>]+>)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\s]+)",
+  "folding": {
+    "offSide": true
+  },
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(Feature|Business Need|Ability|Rule|Background|Scenario Outline|Scenario Template|Scenario|Example|Examples|Scenarios)\\b.*:.*$",
+    "decreaseIndentPattern": "^\\s*(Feature|Business Need|Ability|Rule|Background|Scenario Outline|Scenario Template|Scenario|Example|Examples|Scenarios)\\b"
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(Feature|Business Need|Ability|Rule|Background|Scenario Outline|Scenario Template|Scenario|Example|Examples|Scenarios)\\b.*:.*$",
+      "action": { "indent": "indent" }
+    },
+    {
+      "beforeText": "^\\s*(\"\"\"|```)",
+      "action": { "indent": "indent" }
+    },
+    {
+      "beforeText": "^\\s*(Given|When|Then|And|But|\\*)\\s+.*$",
+      "action": { "indent": "none" }
+    },
+    {
+      "beforeText": "^\\s*\\|.*$",
+      "action": { "indent": "none" }
+    }
   ]
 }
