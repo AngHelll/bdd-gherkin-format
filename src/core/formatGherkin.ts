@@ -57,6 +57,65 @@ function fenceMarker(content: string): string {
   return content.startsWith('```') ? '```' : '"""';
 }
 
+function isContextualKind(kind: LineKind): boolean {
+  return kind === 'comment' || kind === 'other';
+}
+
+function isSkippableForAnchor(kind: LineKind): boolean {
+  return kind === 'blank' || kind === 'comment' || kind === 'other';
+}
+
+/**
+ * Resolve indent for `#` comments and free-text descriptions by anchoring to
+ * the next (or previous) structural line — same idea as tag look-ahead.
+ */
+function resolveContextualIndents(
+  lines: WorkLine[],
+  levels: number[],
+  preserveOriginal: boolean[]
+): void {
+  const n = lines.length;
+
+  const findLookAhead = (from: number): number | null => {
+    for (let j = from + 1; j < n; j++) {
+      if (preserveOriginal[j]) {
+        continue;
+      }
+      if (isSkippableForAnchor(lines[j].kind)) {
+        continue;
+      }
+      return j;
+    }
+    return null;
+  };
+
+  const findLookBack = (from: number): number | null => {
+    for (let j = from - 1; j >= 0; j--) {
+      if (preserveOriginal[j]) {
+        continue;
+      }
+      if (isSkippableForAnchor(lines[j].kind)) {
+        continue;
+      }
+      return j;
+    }
+    return null;
+  };
+
+  for (let i = 0; i < n; i++) {
+    if (preserveOriginal[i] || !isContextualKind(lines[i].kind)) {
+      continue;
+    }
+    const ahead = findLookAhead(i);
+    if (ahead !== null) {
+      levels[i] = levels[ahead];
+      continue;
+    }
+    const behind = findLookBack(i);
+    levels[i] = behind !== null ? levels[behind] : 0;
+  }
+}
+
 /**
  * Format full Gherkin document (or a line range).
  * Preserves whether the input ended with a newline.
@@ -120,6 +179,11 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
       continue;
     }
 
+    // Deferred to resolveContextualIndents (look-ahead / look-back).
+    if (isContextualKind(kind)) {
+      continue;
+    }
+
     if (kind === 'tag') {
       let nextStructural: LineKind | null = null;
       for (let j = i + 1; j < n; j++) {
@@ -139,6 +203,8 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
 
     levels[i] = indentLevelFor(kind, { inRule, inDocString: false, docStringBase });
   }
+
+  resolveContextualIndents(lines, levels, preserveOriginal);
 
   const indentSize = resolveIndentSize(options.indentSize);
   const unit = ' '.repeat(indentSize);

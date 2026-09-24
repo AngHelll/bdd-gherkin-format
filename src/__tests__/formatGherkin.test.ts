@@ -66,6 +66,7 @@ describe('formatGherkin fixtures', () => {
     'docstring',
     'dialect-en',
     'escaped-pipes',
+    'comments',
   ] as const;
 
   for (const name of cases) {

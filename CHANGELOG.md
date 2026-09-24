@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0] — 2026-09-24
+
+### Changed
+
+- `#` comments and free-text descriptions (`other`) use contextual indent: look-ahead to the next structural line (skipping blanks / comments / descriptions), look-back at EOF — same idea as tags
+
 ## [0.3.0] — 2026-09-12
 
 ### Added

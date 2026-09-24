@@ -2,7 +2,7 @@
   "name": "bdd-gherkin-format",
   "displayName": "BDD Gherkin Format",
   "description": "Mute presentation for .feature files — Format Document + syntax highlighting. No binding index. Companion to BDD Guardian.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "anghelll",
   "icon": "icon.png",
   "galleryBanner": {

@@ -10,7 +10,7 @@ VS Code / Cursor extension: **mute presentation** for `.feature` files —
 | | |
 |--|--|
 | **Marketplace** | `anghelll.bdd-gherkin-format` |
-| **Version** | **0.3.0** |
+| **Version** | **0.4.0** |
 | **Publisher** | anghelll |
 
 ## Why a separate extension?
@@ -46,6 +46,7 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 ## What it does
 
 - Indent Feature / Rule / Scenario / steps / Examples / tables (2-space default; `indentSize` or editor tab size)
+- Contextual indent for `#` comments and free-text descriptions (look-ahead / look-back, like tags)
 - Official EN synonyms: `Example`, `Scenario Template`, `Scenarios`, `Business Need`, `Ability`, `*`
 - Align consecutive `|…|` table columns (padding only; numeric cells right-aligned; `\|` stays in-cell)
 - Format Selection
