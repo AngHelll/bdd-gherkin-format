@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.8.0] — 2026-09-28
+
+### Added
+
+- Outline, breadcrumbs, and sticky scroll for Feature, Rule, Background, Scenario, Scenario Outline, and Examples
+- Folding by those keywords (replaces indent-based folding)
+- Expand selection from a placeholder or step line up through the enclosing blocks
+- Placeholder and number scopes inside table cells
+- DocString injection for `json`, `xml`, `sql`, `yaml`/`yml`, and `html`
+- Enter on a table row inserts a skeleton row with the same column count
+- Structural snippets (`feature`, `rule`, `background`, `scenario`, `outline`, `examples`, `docstring`)
+- Highlight of a `<placeholder>` and its Examples header cell, limited to the current Scenario Outline
+- Dialects `en`, `es`, and `pt` from `# language:`, shared by the classifier and the TextMate grammar
+- Opt-in layout settings, all off by default: `keywordSpacing`, `alignStepKeywords`, `tagLayout`, `indentDocStrings`, `blankLines`
+- Separate ForgeOne pack manifest in `extension-pack/` (Format + Guardian only). This extension still has no `extensionDependencies`
+
+### Performance
+
+- Activates only when a Gherkin document opens (`workspaceContains:**/*.feature` removed; Guardian, Pilot, and Jarvis already scan for it)
+- Outline, folding, selection, and highlight share one parse per document version
+- Format Document replaces only the changed lines instead of the whole document, so cursor, markers, and undo stay local and listeners in other extensions see small change events
+- Enter on a table row only intercepts the key at the end of a row, and never while the suggest widget or an inline suggestion is visible
+
 ## [0.4.0] — 2026-09-24
 
 ### Changed

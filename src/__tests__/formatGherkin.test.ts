@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import {
   alignTableBlock,
   classifyLine,
+  DIALECTS,
   formatGherkin,
   parseTableRow,
 } from '../core';
@@ -111,10 +112,119 @@ describe('formatGherkin fixtures', () => {
     expect(out).toBe('Feature: X\n    Scenario: Y\n        Given a step\n');
   });
 
+  it('classifies Spanish steps only in the es dialect', () => {
+    expect(classifyLine('Dado un tarjeta', DIALECTS.es)).toBe('step');
+    expect(classifyLine('Dado un tarjeta')).toBe('other');
+    expect(classifyLine('Ejemplos:', DIALECTS.es)).toBe('examples');
+    expect(classifyLine('Esquema del escenario: Monto', DIALECTS.es)).toBe('scenario_outline');
+  });
+
+  it('indents a Spanish feature from # language: es', () => {
+    const src = '# language: es\nCaracterística: Pago\nEscenario: Tarjeta\nDado un tarjeta\nCuando pago\nEntonces ok\n';
+    expect(formatGherkin(src)).toBe(
+      '# language: es\nCaracterística: Pago\n  Escenario: Tarjeta\n    Dado un tarjeta\n    Cuando pago\n    Entonces ok\n'
+    );
+  });
+
+  it('keeps English indent when the language iso is unknown', () => {
+    const src = '# language: zz\nFeature: X\nScenario: Y\nGiven a\n';
+    expect(formatGherkin(src)).toBe('# language: zz\nFeature: X\n  Scenario: Y\n    Given a\n');
+  });
+
   it('can left-align numeric table cells', () => {
     const src = 'Feature: T\n  Scenario: S\n    Given a table\n      | n |\n      | 1 |\n      | 10 |\n';
     const out = formatGherkin(src, { alignNumbers: false });
     expect(out).toContain('| 1  |');
     expect(out).toContain('| 10 |');
+  });
+});
+
+describe('layout policies', () => {
+  const messy = [
+    'Feature:Pay',
+    'Scenario:A',
+    'Given  one',
+    '',
+    'When two',
+    '@slow @wip',
+    'Scenario:B',
+    'Given three',
+    'Examples:',
+    '| a |',
+    '',
+  ].join('\n');
+
+  it('leaves text unchanged when every policy is off', () => {
+    expect(formatGherkin(messy)).toBe(formatGherkin(messy, {}));
+    const once = formatGherkin(messy);
+    expect(formatGherkin(once)).toBe(once);
+  });
+
+  it('canonicalizes keyword spacing', () => {
+    const out = formatGherkin('Feature:Pay\n  Scenario:Card\n    Given  a card\n    *  done\n', {
+      keywordSpacing: true,
+    });
+    expect(out).toBe('Feature: Pay\n  Scenario: Card\n    Given a card\n    * done\n');
+    expect(formatGherkin(out, { keywordSpacing: true })).toBe(out);
+  });
+
+  it('aligns step keyword columns inside a scenario', () => {
+    const out = formatGherkin('Feature: P\n  Scenario: S\n    Given a card\n    When I pay\n    * done\n', {
+      alignStepKeywords: true,
+    });
+    expect(out).toContain('    Given a card');
+    expect(out).toContain('    When  I pay');
+    expect(out).toContain('    *     done');
+    expect(formatGherkin(out, { alignStepKeywords: true })).toBe(out);
+  });
+
+  it('puts one tag per line without sorting', () => {
+    const out = formatGherkin('Feature: T\n  @b @a\n  Scenario: S\n    Given x\n', {
+      tagLayout: 'onePerLine',
+    });
+    expect(out).toContain('  @b\n  @a\n  Scenario: S');
+    expect(formatGherkin(out, { tagLayout: 'onePerLine' })).toBe(out);
+  });
+
+  it('reindents docstring bodies without rewriting their text', () => {
+    const src = 'Feature: D\n  Scenario: S\n    Given a\n      """\n{"a":1}\n  nested\n      """\n';
+    const out = formatGherkin(src, { indentDocStrings: true });
+    expect(out).toContain('        {"a":1}');
+    expect(out).toContain('          nested');
+    expect(formatGherkin(out, { indentDocStrings: true })).toBe(out);
+  });
+
+  it('applies the pretty blank-line policy and stays idempotent', () => {
+    const out = formatGherkin(messy, { blankLines: 'pretty' });
+    expect(out).toBe(
+      [
+        'Feature:Pay',
+        '',
+        '  Scenario:A',
+        '    Given  one',
+        '    When two',
+        '',
+        '  @slow @wip',
+        '  Scenario:B',
+        '    Given three',
+        '',
+        '    Examples:',
+        '      | a |',
+        '',
+      ].join('\n')
+    );
+    expect(formatGherkin(out, { blankLines: 'pretty' })).toBe(out);
+  });
+
+  it('is idempotent with every layout policy enabled', () => {
+    const options = {
+      keywordSpacing: true,
+      alignStepKeywords: true,
+      tagLayout: 'onePerLine' as const,
+      indentDocStrings: true,
+      blankLines: 'pretty' as const,
+    };
+    const once = formatGherkin(messy, options);
+    expect(formatGherkin(once, options)).toBe(once);
   });
 });

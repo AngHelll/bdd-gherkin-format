@@ -11,7 +11,8 @@
 | ✅ Shipped | **v0.2.0** — TextMate syntax highlighting (presentation mute) |
 | ✅ Shipped | **v0.3.0** — dialecto EN, language config, indentSize / alignNumbers |
 | ✅ Shipped | **v0.4.0** — indent contextual de `#` y descripciones |
-| 🎯 Next | Dogfood 30d / outline + snippets estructurales |
+| ✅ Shipped | **v0.8.0** — outline, folding, selección, grammar, snippets, layout opt-in, placeholder highlight, i18n `en`/`es`/`pt` |
+| ✅ Shipped | **v0.9** — pack manifest aparte (`extension-pack/`), sin dependency en esta extensión |
 | 🏁 Goal | Look del `.feature` sin segundo indexador |
 
 **No hace:** matching, F12, generate, Coach, run tests, colores bound/unbound (Guardian).
@@ -27,16 +28,12 @@
 
 Mental pack: [docs/EXTENSION_PACK.md](./docs/EXTENSION_PACK.md)
 
-## Post-v0.4
+## Plan v0.5 → v0.9
 
-| Item | Notes |
-|------|-------|
-| Outline / sticky scroll | Estructura del archivo, no mapa |
-| Snippets estructurales | Feature / Scenario / Outline — sin steps indexados |
-| Pretty blank-line policy | Solo si dogfood lo pide |
-| i18n keywords (grammar + classifier) | Solo si dogfood lo pide |
-| extensionPack VSIX | Opcional |
+Detalle: [docs-internal/specs/plan-presentation-v0.5-v0.9.md](./docs-internal/specs/plan-presentation-v0.5-v0.9.md). Implementado en **0.8.0** de esta extensión. El pack vive en [extension-pack/](./extension-pack/) y se publica aparte.
+
+Dogfood 30d sigue decidiendo si alguna política de layout (`blankLines`, `tagLayout`, `alignStepKeywords`, `indentDocStrings`, `keywordSpacing`) pasa de opt-in a default.
 
 ---
 
-*MVP 2026-09-11 · presentation grammar 2026-09-11 · pretty comments 2026-09-24*
+*MVP 2026-09-11 · presentation grammar 2026-09-11 · pretty comments 2026-09-24 · plan v0.5–v0.9 implementado 2026-09-28*

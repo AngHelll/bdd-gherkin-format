@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { formatGherkin, type FormatOptions } from '../core/formatGherkin';
+import { minimalEdit } from '../core/minimalEdit';
 
 function isEnabled(): boolean {
   return vscode.workspace.getConfiguration('bddGherkinFormat').get<boolean>('enabled', true);
@@ -10,10 +11,30 @@ export function resolveWorkspaceFormatOptions(
 ): FormatOptions {
   const config = vscode.workspace.getConfiguration('bddGherkinFormat');
   const indentSize = config.get<number | null>('indentSize', null);
+  const tagLayout = config.get<string>('tagLayout', 'preserve');
+  const blankLines = config.get<string>('blankLines', 'preserve');
   return {
     indentSize: indentSize ?? editorOptions.tabSize ?? 2,
     alignNumbers: config.get<boolean>('alignNumbers', true),
+    keywordSpacing: config.get<boolean>('keywordSpacing', false),
+    alignStepKeywords: config.get<boolean>('alignStepKeywords', false),
+    tagLayout: tagLayout === 'onePerLine' ? 'onePerLine' : 'preserve',
+    indentDocStrings: config.get<boolean>('indentDocStrings', false),
+    blankLines: blankLines === 'pretty' ? 'pretty' : 'preserve',
   };
+}
+
+function toTextEdits(
+  document: vscode.TextDocument,
+  original: string,
+  formatted: string
+): vscode.TextEdit[] {
+  const edit = minimalEdit(original, formatted);
+  if (!edit) {
+    return [];
+  }
+  const range = new vscode.Range(document.positionAt(edit.start), document.positionAt(edit.end));
+  return [vscode.TextEdit.replace(range, edit.text)];
 }
 
 function fullDocumentEdit(
@@ -21,15 +42,7 @@ function fullDocumentEdit(
   formatOptions: FormatOptions
 ): vscode.TextEdit[] {
   const original = document.getText();
-  const formatted = formatGherkin(original, formatOptions);
-  if (formatted === original) {
-    return [];
-  }
-  const fullRange = new vscode.Range(
-    document.positionAt(0),
-    document.positionAt(original.length)
-  );
-  return [vscode.TextEdit.replace(fullRange, formatted)];
+  return toTextEdits(document, original, formatGherkin(original, formatOptions));
 }
 
 function rangeEdit(
@@ -45,16 +58,7 @@ function rangeEdit(
       endLine: range.end.line,
     },
   });
-  if (formatted === original) {
-    return [];
-  }
-  const fullRange = new vscode.Range(
-    document.positionAt(0),
-    document.positionAt(original.length)
-  );
-  // Range format may only change lines in range but we rewrite via full-text
-  // compare so surrounding lines stay identical.
-  return [vscode.TextEdit.replace(fullRange, formatted)];
+  return toTextEdits(document, original, formatted);
 }
 
 export class GherkinFormattingProvider

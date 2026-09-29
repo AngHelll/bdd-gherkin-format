@@ -52,6 +52,84 @@ export function parseTableRow(line: string): string[] | null {
   return cells.length > 0 ? cells : null;
 }
 
+export interface TableCellSpan {
+  /** Trimmed cell text. */
+  text: string;
+  /** Start index of the trimmed text in the original line. */
+  start: number;
+  /** Exclusive end index of the trimmed text. */
+  end: number;
+  /** Index just after the opening pipe. */
+  interiorStart: number;
+  /** Index of the closing pipe, or the line length. */
+  interiorEnd: number;
+}
+
+/**
+ * Cell spans for a table line, including character offsets into `line`.
+ * Returns null when `line` is not a Gherkin table row.
+ */
+export function tableCellSpans(line: string): TableCellSpan[] | null {
+  const pipe = line.indexOf('|');
+  if (pipe < 0 || line.slice(0, pipe).trim() !== '') {
+    return null;
+  }
+
+  const cells: TableCellSpan[] = [];
+  let i = pipe + 1;
+  let interiorStart = i;
+  let current = '';
+
+  const push = (interiorEnd: number) => {
+    const trimmed = current.trim();
+    const lead = current.length - current.trimStart().length;
+    const start = interiorStart + lead;
+    cells.push({
+      text: trimmed,
+      start,
+      end: start + trimmed.length,
+      interiorStart,
+      interiorEnd,
+    });
+  };
+
+  while (i < line.length) {
+    const ch = line[i];
+    if (ch === '\\' && i + 1 < line.length) {
+      current += ch + line[i + 1];
+      i += 2;
+      continue;
+    }
+    if (ch === '|') {
+      push(i);
+      current = '';
+      i += 1;
+      interiorStart = i;
+      continue;
+    }
+    current += ch;
+    i += 1;
+  }
+
+  if (current.trim() !== '' || !line.endsWith('|')) {
+    push(line.length);
+  }
+
+  return cells.length > 0 ? cells : null;
+}
+
+/**
+ * Skeleton row with the same column count. Caret sits in the first cell.
+ * Returns null when `line` is not a table row.
+ */
+export function tableRowSkeleton(line: string): { row: string; caret: number } | null {
+  const cells = parseTableRow(line);
+  if (!cells || cells.length === 0) {
+    return null;
+  }
+  return { row: `|${'  |'.repeat(cells.length)}`, caret: 2 };
+}
+
 export function formatTableRow(
   cells: string[],
   widths: number[],

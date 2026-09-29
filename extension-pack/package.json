@@ -1,0 +1,15 @@
+{
+  "name": "bdd-forgeone",
+  "displayName": "BDD ForgeOne",
+  "description": "Presentation plus the step map: BDD Gherkin Format and BDD Guardian. Pilot and Jarvis stay optional.",
+  "version": "0.1.0",
+  "publisher": "anghelll",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Extension Packs"],
+  "extensionPack": [
+    "anghelll.bdd-gherkin-format",
+    "anghelll.bdd-guardian"
+  ]
+}

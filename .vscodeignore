@@ -1,4 +1,5 @@
 src/**/*.ts
+src/**/*.json
 !out/**/*.js
 node_modules/
 *.vsix
@@ -14,6 +15,7 @@ docs/**
 .cursor/**
 config/**
 scripts/**
+extension-pack/**
 src/__tests__/**
 out/__tests__/**
 CHANGELOG.md

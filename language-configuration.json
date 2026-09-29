@@ -3,44 +3,76 @@
     "lineComment": "#"
   },
   "brackets": [
-    ["\"\"\"", "\"\"\""],
-    ["```", "```"]
+    [
+      "\"\"\"",
+      "\"\"\""
+    ],
+    [
+      "```",
+      "```"
+    ]
   ],
   "autoClosingPairs": [
-    { "open": "\"", "close": "\"" },
-    { "open": "'", "close": "'" },
-    { "open": "\"\"\"", "close": "\"\"\"" },
-    { "open": "```", "close": "```" }
+    {
+      "open": "\"",
+      "close": "\""
+    },
+    {
+      "open": "'",
+      "close": "'"
+    },
+    {
+      "open": "\"\"\"",
+      "close": "\"\"\""
+    },
+    {
+      "open": "```",
+      "close": "```"
+    }
   ],
   "surroundingPairs": [
-    ["\"", "\""],
-    ["'", "'"],
-    ["<", ">"]
+    [
+      "\"",
+      "\""
+    ],
+    [
+      "'",
+      "'"
+    ],
+    [
+      "<",
+      ">"
+    ]
   ],
   "wordPattern": "(-?\\d*\\.\\d\\w*)|(@[\\w.-]+)|(<[^>]+>)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\-\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\s]+)",
-  "folding": {
-    "offSide": true
-  },
   "indentationRules": {
-    "increaseIndentPattern": "^\\s*(Feature|Business Need|Ability|Rule|Background|Scenario Outline|Scenario Template|Scenario|Example|Examples|Scenarios)\\b.*:.*$",
-    "decreaseIndentPattern": "^\\s*(Feature|Business Need|Ability|Rule|Background|Scenario Outline|Scenario Template|Scenario|Example|Examples|Scenarios)\\b"
+    "increaseIndentPattern": "^\\s*(Delineacao do Cenario|Delineação do Cenário|Esquema del escenario|Necesidad del negocio|Esquema do Cenario|Esquema do Cenário|Scenario Template|Cenario de Fundo|Cenário de Fundo|Regla de negocio|Scenario Outline|Caracteristica|Característica|Funcionalidade|Business Need|Antecedentes|Background|Escenario|Requisito|Scenarios|Cenarios|Cenários|Contexto|Ejemplos|Examples|Exemplos|Scenario|Ability|Cenario|Cenário|Ejemplo|Example|Exemplo|Feature|Fundo|Regla|Regra|Rule)\\b.*:.*$",
+    "decreaseIndentPattern": "^\\s*(Delineacao do Cenario|Delineação do Cenário|Esquema del escenario|Necesidad del negocio|Esquema do Cenario|Esquema do Cenário|Scenario Template|Cenario de Fundo|Cenário de Fundo|Regla de negocio|Scenario Outline|Caracteristica|Característica|Funcionalidade|Business Need|Antecedentes|Background|Escenario|Requisito|Scenarios|Cenarios|Cenários|Contexto|Ejemplos|Examples|Exemplos|Scenario|Ability|Cenario|Cenário|Ejemplo|Example|Exemplo|Feature|Fundo|Regla|Regra|Rule)\\b"
   },
   "onEnterRules": [
     {
-      "beforeText": "^\\s*(Feature|Business Need|Ability|Rule|Background|Scenario Outline|Scenario Template|Scenario|Example|Examples|Scenarios)\\b.*:.*$",
-      "action": { "indent": "indent" }
+      "beforeText": "^\\s*(Delineacao do Cenario|Delineação do Cenário|Esquema del escenario|Necesidad del negocio|Esquema do Cenario|Esquema do Cenário|Scenario Template|Cenario de Fundo|Cenário de Fundo|Regla de negocio|Scenario Outline|Caracteristica|Característica|Funcionalidade|Business Need|Antecedentes|Background|Escenario|Requisito|Scenarios|Cenarios|Cenários|Contexto|Ejemplos|Examples|Exemplos|Scenario|Ability|Cenario|Cenário|Ejemplo|Example|Exemplo|Feature|Fundo|Regla|Regra|Rule)\\b.*:.*$",
+      "action": {
+        "indent": "indent"
+      }
     },
     {
       "beforeText": "^\\s*(\"\"\"|```)",
-      "action": { "indent": "indent" }
+      "action": {
+        "indent": "indent"
+      }
     },
     {
-      "beforeText": "^\\s*(Given|When|Then|And|But|\\*)\\s+.*$",
-      "action": { "indent": "none" }
+      "beforeText": "^\\s*(Entonces|Cuando|Quando|Dadas|Dados|Entao|Então|Given|Dada|Dado|Pero|Then|When|And|But|Mas|E|Y|\\*)\\s+.*$",
+      "action": {
+        "indent": "none"
+      }
     },
     {
       "beforeText": "^\\s*\\|.*$",
-      "action": { "indent": "none" }
+      "action": {
+        "indent": "none"
+      }
     }
   ]
 }

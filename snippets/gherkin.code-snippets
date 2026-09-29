@@ -1,0 +1,52 @@
+{
+  "Feature": {
+    "prefix": "feature",
+    "body": ["Feature: ${1:title}", "$2", ""],
+    "description": "Feature and a free-text description"
+  },
+  "Rule": {
+    "prefix": "rule",
+    "body": ["Rule: ${1:title}", ""],
+    "description": "Rule"
+  },
+  "Background": {
+    "prefix": "background",
+    "body": ["Background:", "  Given ${1:precondition}", ""],
+    "description": "Background with one empty step"
+  },
+  "Scenario": {
+    "prefix": "scenario",
+    "body": [
+      "Scenario: ${1:title}",
+      "  Given ${2:precondition}",
+      "  When ${3:action}",
+      "  Then ${4:outcome}",
+      ""
+    ],
+    "description": "Scenario with Given / When / Then tab stops"
+  },
+  "Scenario Outline": {
+    "prefix": "outline",
+    "body": [
+      "Scenario Outline: ${1:title}",
+      "  Given ${2:precondition} <${3:value}>",
+      "  When ${4:action}",
+      "  Then ${5:outcome}",
+      "  Examples:",
+      "    | ${3:value} |",
+      "    | ${6:example} |",
+      ""
+    ],
+    "description": "Scenario Outline and one Examples column"
+  },
+  "Examples": {
+    "prefix": "examples",
+    "body": ["Examples:", "  | ${1:column} |", "  | ${2:value} |", ""],
+    "description": "Examples table"
+  },
+  "DocString": {
+    "prefix": "docstring",
+    "body": ["\"\"\"${1:text}", "${2:body}", "\"\"\""],
+    "description": "DocString fence with a content type"
+  }
+}

@@ -3,18 +3,78 @@
   "name": "Gherkin",
   "scopeName": "text.gherkin.feature",
   "patterns": [
-    { "include": "#comment" },
-    { "include": "#tag" },
-    { "include": "#docstring_triple" },
-    { "include": "#docstring_backtick" },
-    { "include": "#table" },
-    { "include": "#feature" },
-    { "include": "#rule" },
-    { "include": "#background" },
-    { "include": "#scenario_outline" },
-    { "include": "#scenario" },
-    { "include": "#examples" },
-    { "include": "#step" }
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#tag"
+    },
+    {
+      "include": "#docstring_json_triple"
+    },
+    {
+      "include": "#docstring_json_backtick"
+    },
+    {
+      "include": "#docstring_xml_triple"
+    },
+    {
+      "include": "#docstring_xml_backtick"
+    },
+    {
+      "include": "#docstring_sql_triple"
+    },
+    {
+      "include": "#docstring_sql_backtick"
+    },
+    {
+      "include": "#docstring_yaml_triple"
+    },
+    {
+      "include": "#docstring_yaml_backtick"
+    },
+    {
+      "include": "#docstring_yml_triple"
+    },
+    {
+      "include": "#docstring_yml_backtick"
+    },
+    {
+      "include": "#docstring_html_triple"
+    },
+    {
+      "include": "#docstring_html_backtick"
+    },
+    {
+      "include": "#docstring_triple"
+    },
+    {
+      "include": "#docstring_backtick"
+    },
+    {
+      "include": "#table"
+    },
+    {
+      "include": "#feature"
+    },
+    {
+      "include": "#rule"
+    },
+    {
+      "include": "#background"
+    },
+    {
+      "include": "#scenario_outline"
+    },
+    {
+      "include": "#scenario"
+    },
+    {
+      "include": "#examples"
+    },
+    {
+      "include": "#step"
+    }
   ],
   "repository": {
     "comment": {
@@ -35,64 +95,110 @@
       }
     },
     "feature": {
-      "match": "^(\\s*)(Feature|Business Need|Ability)(:)(.*)$",
+      "match": "^(\\s*)(Necesidad del negocio|Caracteristica|Característica|Funcionalidade|Business Need|Requisito|Ability|Feature)(:)(.*)$",
       "captures": {
-        "2": { "name": "keyword.control.feature.gherkin" },
-        "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
-        "4": { "name": "entity.name.type.feature.gherkin" }
+        "2": {
+          "name": "keyword.control.feature.gherkin"
+        },
+        "3": {
+          "name": "punctuation.separator.dictionary.key-value.gherkin"
+        },
+        "4": {
+          "name": "entity.name.type.feature.gherkin"
+        }
       }
     },
     "rule": {
-      "match": "^(\\s*)(Rule)(:)(.*)$",
+      "match": "^(\\s*)(Regla de negocio|Regla|Regra|Rule)(:)(.*)$",
       "captures": {
-        "2": { "name": "keyword.control.rule.gherkin" },
-        "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
-        "4": { "name": "entity.name.type.rule.gherkin" }
+        "2": {
+          "name": "keyword.control.rule.gherkin"
+        },
+        "3": {
+          "name": "punctuation.separator.dictionary.key-value.gherkin"
+        },
+        "4": {
+          "name": "entity.name.type.rule.gherkin"
+        }
       }
     },
     "background": {
-      "match": "^(\\s*)(Background)(:)(.*)$",
+      "match": "^(\\s*)(Cenario de Fundo|Cenário de Fundo|Antecedentes|Background|Contexto|Fundo)(:)(.*)$",
       "captures": {
-        "2": { "name": "keyword.control.background.gherkin" },
-        "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
-        "4": { "name": "entity.name.section.background.gherkin" }
+        "2": {
+          "name": "keyword.control.background.gherkin"
+        },
+        "3": {
+          "name": "punctuation.separator.dictionary.key-value.gherkin"
+        },
+        "4": {
+          "name": "entity.name.section.background.gherkin"
+        }
       }
     },
     "scenario_outline": {
-      "match": "^(\\s*)(Scenario Outline|Scenario Template)(:)(.*)$",
+      "match": "^(\\s*)(Delineacao do Cenario|Delineação do Cenário|Esquema del escenario|Esquema do Cenario|Esquema do Cenário|Scenario Template|Scenario Outline)(:)(.*)$",
       "captures": {
-        "2": { "name": "keyword.control.scenario.gherkin" },
-        "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
-        "4": { "name": "entity.name.function.scenario.gherkin" }
+        "2": {
+          "name": "keyword.control.scenario.gherkin"
+        },
+        "3": {
+          "name": "punctuation.separator.dictionary.key-value.gherkin"
+        },
+        "4": {
+          "name": "entity.name.function.scenario.gherkin"
+        }
       }
     },
     "scenario": {
-      "match": "^(\\s*)(Scenario|Example)(:)(.*)$",
+      "match": "^(\\s*)(Escenario|Scenario|Cenario|Cenário|Ejemplo|Example|Exemplo)(:)(.*)$",
       "captures": {
-        "2": { "name": "keyword.control.scenario.gherkin" },
-        "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
-        "4": { "name": "entity.name.function.scenario.gherkin" }
+        "2": {
+          "name": "keyword.control.scenario.gherkin"
+        },
+        "3": {
+          "name": "punctuation.separator.dictionary.key-value.gherkin"
+        },
+        "4": {
+          "name": "entity.name.function.scenario.gherkin"
+        }
       }
     },
     "examples": {
-      "match": "^(\\s*)(Examples|Scenarios)(:)(.*)$",
+      "match": "^(\\s*)(Scenarios|Cenarios|Cenários|Ejemplos|Examples|Exemplos)(:)(.*)$",
       "captures": {
-        "2": { "name": "keyword.control.examples.gherkin" },
-        "3": { "name": "punctuation.separator.dictionary.key-value.gherkin" },
-        "4": { "name": "entity.name.section.examples.gherkin" }
+        "2": {
+          "name": "keyword.control.examples.gherkin"
+        },
+        "3": {
+          "name": "punctuation.separator.dictionary.key-value.gherkin"
+        },
+        "4": {
+          "name": "entity.name.section.examples.gherkin"
+        }
       }
     },
     "step": {
-      "match": "^(\\s*)(Given|When|Then|And|But|\\*)(\\s+)(.*)$",
+      "match": "^(\\s*)(Entonces|Cuando|Quando|Dadas|Dados|Entao|Então|Given|Dada|Dado|Pero|Then|When|And|But|Mas|E|Y|\\*)(\\s+)(.*)$",
       "captures": {
-        "2": { "name": "keyword.other.step.gherkin" },
+        "2": {
+          "name": "keyword.other.step.gherkin"
+        },
         "4": {
           "name": "meta.step.description.gherkin",
           "patterns": [
-            { "include": "#string_double" },
-            { "include": "#string_single" },
-            { "include": "#placeholder" },
-            { "include": "#number" }
+            {
+              "include": "#string_double"
+            },
+            {
+              "include": "#string_single"
+            },
+            {
+              "include": "#placeholder"
+            },
+            {
+              "include": "#number"
+            }
           ]
         }
       }
@@ -102,7 +208,10 @@
       "begin": "\"",
       "end": "\"",
       "patterns": [
-        { "name": "constant.character.escape.gherkin", "match": "\\\\." }
+        {
+          "name": "constant.character.escape.gherkin",
+          "match": "\\\\."
+        }
       ]
     },
     "string_single": {
@@ -110,7 +219,10 @@
       "begin": "'",
       "end": "'",
       "patterns": [
-        { "name": "constant.character.escape.gherkin", "match": "\\\\." }
+        {
+          "name": "constant.character.escape.gherkin",
+          "match": "\\\\."
+        }
       ]
     },
     "placeholder": {
@@ -127,12 +239,302 @@
       "end": "$",
       "patterns": [
         {
+          "name": "constant.character.escape.gherkin",
+          "match": "\\\\\\|"
+        },
+        {
+          "include": "#placeholder"
+        },
+        {
+          "include": "#number"
+        },
+        {
           "name": "punctuation.separator.table.gherkin",
           "match": "\\|"
         },
         {
           "name": "string.unquoted.table.gherkin",
-          "match": "[^|]+"
+          "match": "[^|\\d<\\\\]+"
+        },
+        {
+          "name": "string.unquoted.table.gherkin",
+          "match": "."
+        }
+      ]
+    },
+    "docstring_json_triple": {
+      "name": "meta.embedded.block.json.gherkin",
+      "begin": "^(\\s*)(\"\"\")[ \\t]*((?i:json))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(\"\"\")",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.json"
+        }
+      ]
+    },
+    "docstring_json_backtick": {
+      "name": "meta.embedded.block.json.gherkin",
+      "begin": "^(\\s*)(```)[ \\t]*((?i:json))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(```)",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.json"
+        }
+      ]
+    },
+    "docstring_xml_triple": {
+      "name": "meta.embedded.block.xml.gherkin",
+      "begin": "^(\\s*)(\"\"\")[ \\t]*((?i:xml))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(\"\"\")",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "text.xml"
+        }
+      ]
+    },
+    "docstring_xml_backtick": {
+      "name": "meta.embedded.block.xml.gherkin",
+      "begin": "^(\\s*)(```)[ \\t]*((?i:xml))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(```)",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "text.xml"
+        }
+      ]
+    },
+    "docstring_sql_triple": {
+      "name": "meta.embedded.block.sql.gherkin",
+      "begin": "^(\\s*)(\"\"\")[ \\t]*((?i:sql))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(\"\"\")",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.sql"
+        }
+      ]
+    },
+    "docstring_sql_backtick": {
+      "name": "meta.embedded.block.sql.gherkin",
+      "begin": "^(\\s*)(```)[ \\t]*((?i:sql))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(```)",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.sql"
+        }
+      ]
+    },
+    "docstring_yaml_triple": {
+      "name": "meta.embedded.block.yaml.gherkin",
+      "begin": "^(\\s*)(\"\"\")[ \\t]*((?i:yaml))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(\"\"\")",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.yaml"
+        }
+      ]
+    },
+    "docstring_yaml_backtick": {
+      "name": "meta.embedded.block.yaml.gherkin",
+      "begin": "^(\\s*)(```)[ \\t]*((?i:yaml))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(```)",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.yaml"
+        }
+      ]
+    },
+    "docstring_yml_triple": {
+      "name": "meta.embedded.block.yaml.gherkin",
+      "begin": "^(\\s*)(\"\"\")[ \\t]*((?i:yml))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(\"\"\")",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.yaml"
+        }
+      ]
+    },
+    "docstring_yml_backtick": {
+      "name": "meta.embedded.block.yaml.gherkin",
+      "begin": "^(\\s*)(```)[ \\t]*((?i:yml))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(```)",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.yaml"
+        }
+      ]
+    },
+    "docstring_html_triple": {
+      "name": "meta.embedded.block.html.gherkin",
+      "begin": "^(\\s*)(\"\"\")[ \\t]*((?i:html))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(\"\"\")",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "text.html.basic"
+        }
+      ]
+    },
+    "docstring_html_backtick": {
+      "name": "meta.embedded.block.html.gherkin",
+      "begin": "^(\\s*)(```)[ \\t]*((?i:html))[ \\t]*$",
+      "beginCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "keyword.other.content-type.gherkin"
+        }
+      },
+      "end": "^(\\s*)(```)",
+      "endCaptures": {
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
+      },
+      "patterns": [
+        {
+          "include": "text.html.basic"
         }
       ]
     },
@@ -140,12 +542,18 @@
       "name": "string.quoted.triple.gherkin",
       "begin": "^(\\s*)(\"\"\")(.*)$",
       "beginCaptures": {
-        "2": { "name": "punctuation.definition.string.begin.gherkin" },
-        "3": { "name": "comment.line.gherkin" }
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "comment.line.gherkin"
+        }
       },
       "end": "^(\\s*)(\"\"\")",
       "endCaptures": {
-        "2": { "name": "punctuation.definition.string.end.gherkin" }
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
       },
       "contentName": "meta.embedded.docstring.gherkin"
     },
@@ -153,12 +561,18 @@
       "name": "string.quoted.other.gherkin",
       "begin": "^(\\s*)(```)(.*)$",
       "beginCaptures": {
-        "2": { "name": "punctuation.definition.string.begin.gherkin" },
-        "3": { "name": "comment.line.gherkin" }
+        "2": {
+          "name": "punctuation.definition.string.begin.gherkin"
+        },
+        "3": {
+          "name": "comment.line.gherkin"
+        }
       },
       "end": "^(\\s*)(```)",
       "endCaptures": {
-        "2": { "name": "punctuation.definition.string.end.gherkin" }
+        "2": {
+          "name": "punctuation.definition.string.end.gherkin"
+        }
       },
       "contentName": "meta.embedded.docstring.gherkin"
     }

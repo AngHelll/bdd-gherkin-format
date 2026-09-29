@@ -10,7 +10,7 @@ VS Code / Cursor extension: **mute presentation** for `.feature` files —
 | | |
 |--|--|
 | **Marketplace** | `anghelll.bdd-gherkin-format` |
-| **Version** | **0.4.0** |
+| **Version** | **0.8.0** |
 | **Publisher** | anghelll |
 
 ## Why a separate extension?
@@ -50,8 +50,14 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 - Official EN synonyms: `Example`, `Scenario Template`, `Scenarios`, `Business Need`, `Ability`, `*`
 - Align consecutive `|…|` table columns (padding only; numeric cells right-aligned; `\|` stays in-cell)
 - Format Selection
-- Editor language config: fold by indent, Enter after keywords, `#` comments, `@tag` / `<placeholder>` word pattern
-- TextMate highlighting: structural keywords, step keywords, `#` comments, `@tags`, tables, quotes, DocString fences
+- Editor language config: Enter after keywords, `#` comments, `@tag` / `<placeholder>` word pattern
+- Folding, outline, breadcrumbs, and sticky scroll by Feature / Rule / Scenario / Examples
+- Expand selection from a placeholder or step up to the enclosing scenario and feature
+- TextMate highlighting: structural keywords, step keywords, `#` comments, `@tags`, tables (including `<placeholders>` and numbers), quotes, DocString fences
+- DocString content types `json`, `xml`, `sql`, `yaml`/`yml`, and `html` use the embedded grammar
+- Enter on a `|` row inserts another row with the same number of columns
+- Structural snippets: `feature`, `rule`, `background`, `scenario`, `outline`, `examples`, `docstring`
+- `# language:` selects keyword dialect `en` (default), `es`, or `pt`
 - Language id `gherkin` for `.feature` (works even without Guardian)
 
 ## What it does **not** do
@@ -60,7 +66,7 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 - Autocomplete, diagnostics, generate binding, run tests
 - LSP / undefined-step / glue globs
 - Custom color palette (uses your VS Code theme scopes)
-- Full i18n Gherkin keyword sets (English dialect + synonyms in v0.3)
+- Keyword dialects beyond `en`, `es`, and `pt`
 
 ## Settings
 
@@ -69,6 +75,11 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 | `bddGherkinFormat.enabled` | `true` | Enable Format Document / Selection |
 | `bddGherkinFormat.indentSize` | `null` | Spaces per indent unit. `null` uses the editor tab size (Gherkin defaults to 2) |
 | `bddGherkinFormat.alignNumbers` | `true` | Right-align numeric table cells (integers and decimals) |
+| `bddGherkinFormat.keywordSpacing` | `false` | One space after a step keyword, and `: ` before a title |
+| `bddGherkinFormat.alignStepKeywords` | `false` | Pad step keywords so the step text shares a column |
+| `bddGherkinFormat.tagLayout` | `preserve` | `onePerLine` puts each `@tag` on its own line |
+| `bddGherkinFormat.indentDocStrings` | `false` | Reindent a DocString body relative to its fence |
+| `bddGherkinFormat.blankLines` | `preserve` | `pretty` puts one blank line before scenarios, rules, and examples |
 
 ## Develop
 

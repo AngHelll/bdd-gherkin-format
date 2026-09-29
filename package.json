@@ -2,7 +2,7 @@
   "name": "bdd-gherkin-format",
   "displayName": "BDD Gherkin Format",
   "description": "Mute presentation for .feature files — Format Document + syntax highlighting. No binding index. Companion to BDD Guardian.",
-  "version": "0.4.0",
+  "version": "0.8.0",
   "publisher": "anghelll",
   "icon": "icon.png",
   "galleryBanner": {
@@ -31,8 +31,7 @@
   ],
   "activationEvents": [
     "onLanguage:gherkin",
-    "onLanguage:feature",
-    "workspaceContains:**/*.feature"
+    "onLanguage:feature"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -56,9 +55,29 @@
         "editor.defaultFormatter": "anghelll.bdd-gherkin-format",
         "editor.formatOnSave": true,
         "editor.tabSize": 2,
-        "editor.insertSpaces": true
+        "editor.insertSpaces": true,
+        "editor.stickyScroll.enabled": true
       }
     },
+    "snippets": [
+      {
+        "language": "gherkin",
+        "path": "./snippets/gherkin.code-snippets"
+      }
+    ],
+    "commands": [
+      {
+        "command": "bddGherkinFormat.insertTableRow",
+        "title": "Gherkin: Insert Table Row"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "bddGherkinFormat.insertTableRow",
+        "key": "enter",
+        "when": "editorTextFocus && !editorReadonly && bddGherkinFormat.caretAtTableRowEnd && !suggestWidgetVisible && !inlineSuggestionVisible && !editorHasMultipleSelections"
+      }
+    ],
     "configuration": {
       "title": "BDD Gherkin Format",
       "properties": {
@@ -78,19 +97,47 @@
           "type": "boolean",
           "default": true,
           "description": "Right-align numeric table cells (integers and decimals), like Cucumber Official / Excel."
+        },
+        "bddGherkinFormat.keywordSpacing": {
+          "type": "boolean",
+          "default": false,
+          "description": "Normalize spacing after step keywords and before a keyword title. Does not change keyword case."
+        },
+        "bddGherkinFormat.alignStepKeywords": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pad Given/When/Then/And/But/* so step text starts in the same column within each scenario."
+        },
+        "bddGherkinFormat.tagLayout": {
+          "type": "string",
+          "enum": ["preserve", "onePerLine"],
+          "default": "preserve",
+          "description": "preserve keeps tags as written. onePerLine puts each @tag on its own line."
+        },
+        "bddGherkinFormat.indentDocStrings": {
+          "type": "boolean",
+          "default": false,
+          "description": "Reindent DocString bodies relative to the fence. Does not reformat the body text."
+        },
+        "bddGherkinFormat.blankLines": {
+          "type": "string",
+          "enum": ["preserve", "pretty"],
+          "default": "preserve",
+          "description": "preserve keeps blank lines. pretty inserts one blank line before scenarios, rules, and examples, and removes blanks between steps."
         }
       }
     }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc -p ./ && node -e \"require('fs').copyFileSync('src/core/dialects.json','out/core/dialects.json')\"",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext .ts",
     "pretest": "npm run compile",
     "test": "vitest run",
     "test:watch": "vitest",
     "package": "npx @vscode/vsce package --no-dependencies -o bdd-gherkin-format.vsix",
+    "generate:grammar": "node scripts/generate-grammar-keywords.mjs",
     "verify:local": "bash scripts/verify-local.sh",
     "publish:check": "bash scripts/publish-check.sh",
     "publish:marketplace": "bash scripts/publish-marketplace.sh"

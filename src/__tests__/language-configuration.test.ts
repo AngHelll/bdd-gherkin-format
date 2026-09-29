@@ -15,13 +15,14 @@ describe('gherkin language configuration', () => {
     wordPattern?: string;
   };
 
-  it('keeps # comments and off-side folding', () => {
+  it('keeps # comments and leaves folding to the provider', () => {
     expect(config.comments?.lineComment).toBe('#');
-    expect(config.folding?.offSide).toBe(true);
+    expect(config.folding?.offSide).not.toBe(true);
   });
 
   it('indents after structural keywords and keeps step/table indent', () => {
     expect(config.indentationRules?.increaseIndentPattern).toMatch(/Scenario Template/);
+    expect(config.indentationRules?.increaseIndentPattern).toMatch(/Característica/);
     expect(config.indentationRules?.decreaseIndentPattern).toMatch(/Business Need/);
     const before = (config.onEnterRules ?? []).map((r) => r.beforeText);
     expect(before.some((p) => p.includes('Scenario Outline'))).toBe(true);

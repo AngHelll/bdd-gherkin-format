@@ -1,10 +1,20 @@
 /**
- * Mute Gherkin formatter: indent + align tables.
+ * Mute Gherkin formatter: indent + align tables + opt-in layout policies.
  * Pure TypeScript — no vscode, no binding index.
  */
 
 import { alignTableBlock } from './alignTables';
 import { classifyLine, indentLevelFor, stripIndent, type LineKind } from './classify';
+import { detectDialectId, resolveDialect, type DialectKeywords } from './dialects';
+import {
+  applyAlignStepKeywords,
+  applyBlankLines,
+  applyKeywordSpacing,
+  applyTagLayout,
+  docstringBodyText,
+  type PolicyLine,
+} from './layoutPolicy';
+import { parseDocument, smallestContainingBlock } from './structure';
 
 export const DEFAULT_INDENT_SIZE = 2;
 export const INDENT_UNIT = '  ';
@@ -23,6 +33,16 @@ export interface FormatOptions {
   indentSize?: number;
   /** Right-align numeric table cells. Default true (Cucumber Official / Excel). */
   alignNumbers?: boolean;
+  /** One space after step keywords; `: ` before a title. Default false. */
+  keywordSpacing?: boolean;
+  /** Pad step keywords so the step text shares a column. Default false. */
+  alignStepKeywords?: boolean;
+  /** `preserve` (default) or `onePerLine`. */
+  tagLayout?: 'preserve' | 'onePerLine';
+  /** Reindent DocString bodies relative to the fence. Default false. */
+  indentDocStrings?: boolean;
+  /** `preserve` (default) or `pretty`. */
+  blankLines?: 'preserve' | 'pretty';
 }
 
 export function resolveIndentSize(indentSize?: number): number {
@@ -39,18 +59,8 @@ function applyIndent(level: number, content: string, unit: string): string {
   return unit.repeat(level) + content;
 }
 
-interface WorkLine {
+interface WorkLine extends PolicyLine {
   kind: LineKind;
-  content: string;
-  original: string;
-}
-
-function buildWorkLines(text: string): WorkLine[] {
-  return text.split(/\r?\n/).map((original) => {
-    const kind = classifyLine(original);
-    const content = kind === 'blank' ? '' : stripIndent(original);
-    return { kind, content, original };
-  });
 }
 
 function fenceMarker(content: string): string {
@@ -69,16 +79,12 @@ function isSkippableForAnchor(kind: LineKind): boolean {
  * Resolve indent for `#` comments and free-text descriptions by anchoring to
  * the next (or previous) structural line — same idea as tag look-ahead.
  */
-function resolveContextualIndents(
-  lines: WorkLine[],
-  levels: number[],
-  preserveOriginal: boolean[]
-): void {
+function resolveContextualIndents(lines: WorkLine[]): void {
   const n = lines.length;
 
   const findLookAhead = (from: number): number | null => {
     for (let j = from + 1; j < n; j++) {
-      if (preserveOriginal[j]) {
+      if (lines[j].preserveOriginal || lines[j].inDocString) {
         continue;
       }
       if (isSkippableForAnchor(lines[j].kind)) {
@@ -91,7 +97,7 @@ function resolveContextualIndents(
 
   const findLookBack = (from: number): number | null => {
     for (let j = from - 1; j >= 0; j--) {
-      if (preserveOriginal[j]) {
+      if (lines[j].preserveOriginal || lines[j].inDocString) {
         continue;
       }
       if (isSkippableForAnchor(lines[j].kind)) {
@@ -103,42 +109,43 @@ function resolveContextualIndents(
   };
 
   for (let i = 0; i < n; i++) {
-    if (preserveOriginal[i] || !isContextualKind(lines[i].kind)) {
+    if (lines[i].preserveOriginal || lines[i].inDocString || !isContextualKind(lines[i].kind)) {
       continue;
     }
     const ahead = findLookAhead(i);
     if (ahead !== null) {
-      levels[i] = levels[ahead];
+      lines[i].level = lines[ahead].level;
       continue;
     }
     const behind = findLookBack(i);
-    levels[i] = behind !== null ? levels[behind] : 0;
+    lines[i].level = behind !== null ? lines[behind].level : 0;
   }
 }
 
-/**
- * Format full Gherkin document (or a line range).
- * Preserves whether the input ended with a newline.
- */
-export function formatGherkin(text: string, options: FormatOptions = {}): string {
-  const hadTrailingNewline = /\r?\n$/.test(text);
-  const lines = buildWorkLines(text);
-  const n = lines.length;
-
-  const rangeStart = options.range?.startLine ?? 0;
-  const rangeEnd = options.range?.endLine ?? Math.max(0, n - 1);
-
-  const levels: number[] = new Array(n).fill(0);
-  /** When true, emit `original` unchanged (docstring body). */
-  const preserveOriginal: boolean[] = new Array(n).fill(false);
+function buildWorkLines(text: string, dialect: DialectKeywords): WorkLine[] {
+  const rawLines = text.split(/\r?\n/);
+  const lines: WorkLine[] = rawLines.map((original, sourceIndex) => {
+    const kind = classifyLine(original, dialect);
+    const content = kind === 'blank' ? '' : stripIndent(original);
+    return {
+      kind,
+      content,
+      original,
+      level: 0,
+      preserveOriginal: false,
+      inDocString: false,
+      sourceIndex,
+    };
+  });
 
   let inRule = false;
   let inDocString = false;
   let docStringBase = 3;
   let openMarker = '';
 
-  for (let i = 0; i < n; i++) {
-    const { kind, content } = lines[i];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const { kind, content } = line;
 
     if (kind === 'feature') {
       inRule = false;
@@ -157,69 +164,121 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
           inDocString: false,
           docStringBase: 0,
         });
-        levels[i] = docStringBase;
+        line.level = docStringBase;
       } else if (content.startsWith(openMarker)) {
-        levels[i] = docStringBase;
+        line.level = docStringBase;
         inDocString = false;
         openMarker = '';
       } else {
-        levels[i] = docStringBase;
+        line.level = docStringBase;
       }
       continue;
     }
 
     if (inDocString) {
-      // Body intact — only fence lines are re-indented
-      preserveOriginal[i] = true;
+      line.preserveOriginal = true;
+      line.inDocString = true;
       continue;
     }
 
     if (kind === 'blank') {
-      levels[i] = 0;
+      line.level = 0;
       continue;
     }
 
-    // Deferred to resolveContextualIndents (look-ahead / look-back).
     if (isContextualKind(kind)) {
       continue;
     }
 
     if (kind === 'tag') {
       let nextStructural: LineKind | null = null;
-      for (let j = i + 1; j < n; j++) {
+      for (let j = i + 1; j < lines.length; j++) {
         const k = lines[j].kind;
         if (k === 'blank' || k === 'comment' || k === 'tag') {
+          continue;
+        }
+        if (lines[j].inDocString) {
           continue;
         }
         nextStructural = k;
         break;
       }
-      levels[i] =
+      line.level =
         nextStructural === 'feature' || nextStructural === null
           ? 0
           : indentLevelFor('tag', { inRule, inDocString: false, docStringBase });
       continue;
     }
 
-    levels[i] = indentLevelFor(kind, { inRule, inDocString: false, docStringBase });
+    line.level = indentLevelFor(kind, { inRule, inDocString: false, docStringBase });
   }
 
-  resolveContextualIndents(lines, levels, preserveOriginal);
+  resolveContextualIndents(lines);
+  return lines;
+}
+
+function layoutEnabled(options: FormatOptions): boolean {
+  return Boolean(
+    options.keywordSpacing ||
+      options.alignStepKeywords ||
+      options.indentDocStrings ||
+      options.tagLayout === 'onePerLine' ||
+      options.blankLines === 'pretty'
+  );
+}
+
+interface EmittedLine {
+  text: string;
+  sourceIndex: number;
+  inserted?: boolean;
+}
+
+/**
+ * Format full Gherkin document (or a line range).
+ * Preserves whether the input ended with a newline.
+ */
+export function formatGherkin(text: string, options: FormatOptions = {}): string {
+  const hadTrailingNewline = /\r?\n$/.test(text);
+  const dialect = resolveDialect(detectDialectId(text));
+  let lines = buildWorkLines(text, dialect);
+  const originalLines = text.split(/\r?\n/);
+
+  const rangeStart = options.range?.startLine ?? 0;
+  const rangeEnd = options.range?.endLine ?? Math.max(0, lines.length - 1);
+  let emitStart = rangeStart;
+  let emitEnd = rangeEnd;
+
+  if (options.range && layoutEnabled(options)) {
+    const doc = parseDocument(text);
+    const container = smallestContainingBlock(doc.blocks, rangeStart, rangeEnd);
+    if (container) {
+      emitStart = Math.min(emitStart, container.startLine);
+      emitEnd = Math.max(emitEnd, container.endLine);
+    }
+  }
+
+  if (options.keywordSpacing) {
+    applyKeywordSpacing(lines, dialect);
+  }
+  if (options.alignStepKeywords) {
+    applyAlignStepKeywords(lines, dialect);
+  }
+  if (options.tagLayout === 'onePerLine') {
+    lines = applyTagLayout(lines);
+  }
 
   const indentSize = resolveIndentSize(options.indentSize);
   const unit = ' '.repeat(indentSize);
   const alignNumbers = options.alignNumbers ?? true;
-  const alignedContent = lines.map((l) => l.content);
+  const alignedContent = lines.map((line) => line.content);
 
   let blockStart = -1;
-  const lineInDocStringBody = (index: number): boolean => preserveOriginal[index];
-
   const flushBlock = (endExclusive: number) => {
     if (blockStart < 0) {
       return;
     }
     const blockEnd = endExclusive - 1;
-    const touchesRange = blockEnd >= rangeStart && blockStart <= rangeEnd;
+    const touchesRange = blockEnd >= emitStart && blockStart <= emitEnd;
     if (touchesRange) {
       const slice = alignedContent.slice(blockStart, endExclusive);
       const aligned = alignTableBlock(slice, { alignNumbers });
@@ -230,8 +289,8 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
     blockStart = -1;
   };
 
-  for (let i = 0; i < n; i++) {
-    if (lines[i].kind === 'table' && !lineInDocStringBody(i)) {
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].kind === 'table' && !lines[i].inDocString) {
       if (blockStart < 0) {
         blockStart = i;
       }
@@ -239,30 +298,95 @@ export function formatGherkin(text: string, options: FormatOptions = {}): string
       flushBlock(i);
     }
   }
-  flushBlock(n);
+  flushBlock(lines.length);
 
-  const out: string[] = [];
-  for (let i = 0; i < n; i++) {
-    const inRange = i >= rangeStart && i <= rangeEnd;
-    if (!inRange) {
-      out.push(lines[i].original);
-      continue;
-    }
-
-    if (preserveOriginal[i]) {
-      out.push(lines[i].original);
-      continue;
-    }
-
-    if (lines[i].kind === 'blank') {
-      out.push('');
-      continue;
-    }
-
-    out.push(applyIndent(levels[i], alignedContent[i], unit));
+  if (options.blankLines === 'pretty') {
+    lines = applyBlankLines(lines);
+    // Table alignment already written into alignedContent by old index.
+    // Rebuild content array after line-count changes: copy by identity.
   }
 
-  let result = out.join('\n');
+  const contentByLine = new Map<WorkLine, string>();
+  if (options.blankLines === 'pretty') {
+    // alignedContent was indexed before blank insertion. Re-align tables
+    // on the post-blank line list so indices stay paired.
+    const contents = lines.map((line) => line.content);
+    let start = -1;
+    const flush = (endExclusive: number) => {
+      if (start < 0) {
+        return;
+      }
+      const aligned = alignTableBlock(contents.slice(start, endExclusive), { alignNumbers });
+      for (let k = 0; k < aligned.length; k++) {
+        contents[start + k] = aligned[k];
+      }
+      start = -1;
+    };
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].kind === 'table' && !lines[i].inDocString) {
+        if (start < 0) {
+          start = i;
+        }
+      } else {
+        flush(i);
+      }
+    }
+    flush(lines.length);
+    lines.forEach((line, index) => contentByLine.set(line, contents[index]));
+  } else {
+    lines.forEach((line, index) => contentByLine.set(line, alignedContent[index]));
+  }
+
+  const emitted: EmittedLine[] = lines.map((line) => {
+    if (line.kind === 'blank') {
+      return { text: '', sourceIndex: line.sourceIndex, inserted: line.inserted };
+    }
+    if (line.preserveOriginal && !options.indentDocStrings) {
+      return { text: line.original, sourceIndex: line.sourceIndex };
+    }
+    if (options.indentDocStrings && line.inDocString) {
+      const body = docstringBodyText(lines, lines.indexOf(line), indentSize);
+      if (body !== null) {
+        return { text: body, sourceIndex: line.sourceIndex };
+      }
+    }
+    if (line.preserveOriginal) {
+      return { text: line.original, sourceIndex: line.sourceIndex };
+    }
+    const content = contentByLine.get(line) ?? line.content;
+    return {
+      text: applyIndent(line.level, content, unit),
+      sourceIndex: line.sourceIndex,
+    };
+  });
+
+  let outLines: string[];
+  if (!options.range) {
+    outLines = emitted.map((line) => line.text);
+  } else if (!layoutEnabled(options)) {
+    outLines = emitted.map((line, index) => {
+      const inRange = index >= rangeStart && index <= rangeEnd;
+      return inRange ? line.text : originalLines[index] ?? line.text;
+    });
+  } else {
+    const before = originalLines.slice(0, emitStart);
+    const after = originalLines.slice(emitEnd + 1);
+    const middle = emitted.filter(
+      (line) => line.sourceIndex >= emitStart && line.sourceIndex <= emitEnd
+    );
+    if (
+      middle.length > 0 &&
+      middle[0].inserted &&
+      middle[0].text === '' &&
+      before.length > 0 &&
+      before[before.length - 1].trim() === ''
+    ) {
+      middle.shift();
+    }
+    outLines = [...before, ...middle.map((line) => line.text), ...after];
+  }
+
+  let result = outLines.join('\n');
   if (hadTrailingNewline && !result.endsWith('\n')) {
     result += '\n';
   }
