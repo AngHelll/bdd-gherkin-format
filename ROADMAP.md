@@ -12,6 +12,7 @@
 | ✅ Shipped | **v0.3.0** — dialecto EN, language config, indentSize / alignNumbers |
 | ✅ Shipped | **v0.4.0** — indent contextual de `#` y descripciones |
 | ✅ Shipped | **v0.8.0** — outline, folding, selección, grammar, snippets, layout opt-in, placeholder highlight, i18n `en`/`es`/`pt` |
+| ✅ Shipped | **v0.8.1** — activación solo `onLanguage`, parse cacheado, edits mínimos, Enter en tablas |
 | ✅ Shipped | **v0.9** — pack manifest aparte (`extension-pack/`), sin dependency en esta extensión |
 | 🏁 Goal | Look del `.feature` sin segundo indexador |
 

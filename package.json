@@ -2,7 +2,7 @@
   "name": "bdd-gherkin-format",
   "displayName": "BDD Gherkin Format",
   "description": "Mute presentation for .feature files — Format Document + syntax highlighting. No binding index. Companion to BDD Guardian.",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "publisher": "anghelll",
   "icon": "icon.png",
   "galleryBanner": {
@@ -38,8 +38,13 @@
     "languages": [
       {
         "id": "gherkin",
-        "aliases": ["Gherkin", "Feature"],
-        "extensions": [".feature"],
+        "aliases": [
+          "Gherkin",
+          "Feature"
+        ],
+        "extensions": [
+          ".feature"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -87,7 +92,10 @@
           "description": "Enable Format Document / Format Selection for Gherkin .feature files."
         },
         "bddGherkinFormat.indentSize": {
-          "type": ["number", "null"],
+          "type": [
+            "number",
+            "null"
+          ],
           "default": null,
           "minimum": 1,
           "maximum": 8,
@@ -110,7 +118,10 @@
         },
         "bddGherkinFormat.tagLayout": {
           "type": "string",
-          "enum": ["preserve", "onePerLine"],
+          "enum": [
+            "preserve",
+            "onePerLine"
+          ],
           "default": "preserve",
           "description": "preserve keeps tags as written. onePerLine puts each @tag on its own line."
         },
@@ -121,7 +132,10 @@
         },
         "bddGherkinFormat.blankLines": {
           "type": "string",
-          "enum": ["preserve", "pretty"],
+          "enum": [
+            "preserve",
+            "pretty"
+          ],
           "default": "preserve",
           "description": "preserve keeps blank lines. pretty inserts one blank line before scenarios, rules, and examples, and removes blanks between steps."
         }
