@@ -2,7 +2,7 @@
   "name": "bdd-gherkin-format",
   "displayName": "BDD Gherkin Format",
   "description": "Mute presentation for .feature files — Format Document + syntax highlighting. No binding index. Companion to BDD Guardian.",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "publisher": "anghelll",
   "icon": "icon.png",
   "galleryBanner": {
@@ -61,7 +61,8 @@
         "editor.formatOnSave": true,
         "editor.tabSize": 2,
         "editor.insertSpaces": true,
-        "editor.stickyScroll.enabled": true
+        "editor.stickyScroll.enabled": true,
+        "editor.formatOnType": true
       }
     },
     "snippets": [
@@ -73,14 +74,205 @@
     "commands": [
       {
         "command": "bddGherkinFormat.insertTableRow",
-        "title": "Gherkin: Insert Table Row"
+        "title": "Insert Table Row",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.nextCell",
+        "title": "Next Table Cell",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.previousCell",
+        "title": "Previous Table Cell",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.alignTable",
+        "title": "Align Table",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.insertColumnLeft",
+        "title": "Insert Column Left",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.insertColumnRight",
+        "title": "Insert Column Right",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.deleteColumn",
+        "title": "Delete Column",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.moveColumnLeft",
+        "title": "Move Column Left",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.moveColumnRight",
+        "title": "Move Column Right",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.sortAscending",
+        "title": "Sort Rows by Column (Ascending)",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.sortDescending",
+        "title": "Sort Rows by Column (Descending)",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.pasteAsTable",
+        "title": "Paste as Table (Excel, CSV, TSV)",
+        "category": "Gherkin"
+      },
+      {
+        "command": "bddGherkinFormat.copyTableAsTsv",
+        "title": "Copy Table for Excel (TSV)",
+        "category": "Gherkin"
       }
     ],
+    "submenus": [
+      {
+        "id": "bddGherkinFormat.table",
+        "label": "Gherkin Table"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "bddGherkinFormat.table",
+          "group": "1_modification@9",
+          "when": "editorLangId == gherkin || editorLangId == feature"
+        }
+      ],
+      "bddGherkinFormat.table": [
+        {
+          "command": "bddGherkinFormat.pasteAsTable",
+          "group": "1_clipboard@1"
+        },
+        {
+          "command": "bddGherkinFormat.copyTableAsTsv",
+          "group": "1_clipboard@2",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.alignTable",
+          "group": "2_table@1",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.insertColumnLeft",
+          "group": "3_column@1",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.insertColumnRight",
+          "group": "3_column@2",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.moveColumnLeft",
+          "group": "3_column@3",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.moveColumnRight",
+          "group": "3_column@4",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.deleteColumn",
+          "group": "3_column@5",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.sortAscending",
+          "group": "4_sort@1",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.sortDescending",
+          "group": "4_sort@2",
+          "when": "bddGherkinFormat.inTableRow"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "bddGherkinFormat.insertTableRow",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.nextCell",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.previousCell",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.alignTable",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.insertColumnLeft",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.insertColumnRight",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.deleteColumn",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.moveColumnLeft",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.moveColumnRight",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.sortAscending",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.sortDescending",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.copyTableAsTsv",
+          "when": "bddGherkinFormat.inTableRow"
+        },
+        {
+          "command": "bddGherkinFormat.pasteAsTable",
+          "when": "editorLangId == gherkin || editorLangId == feature"
+        }
+      ]
+    },
     "keybindings": [
       {
         "command": "bddGherkinFormat.insertTableRow",
         "key": "enter",
         "when": "editorTextFocus && !editorReadonly && bddGherkinFormat.caretAtTableRowEnd && !suggestWidgetVisible && !inlineSuggestionVisible && !editorHasMultipleSelections"
+      },
+      {
+        "command": "bddGherkinFormat.nextCell",
+        "key": "tab",
+        "when": "editorTextFocus && !editorReadonly && bddGherkinFormat.inTableRow && !suggestWidgetVisible && !inlineSuggestionVisible && !inSnippetMode && !editorTabMovesFocus && !editorHasMultipleSelections && config.bddGherkinFormat.tableTabNavigation"
+      },
+      {
+        "command": "bddGherkinFormat.previousCell",
+        "key": "shift+tab",
+        "when": "editorTextFocus && !editorReadonly && bddGherkinFormat.inTableRow && !suggestWidgetVisible && !inlineSuggestionVisible && !inSnippetMode && !editorTabMovesFocus && !editorHasMultipleSelections && config.bddGherkinFormat.tableTabNavigation"
       }
     ],
     "configuration": {
@@ -105,6 +297,16 @@
           "type": "boolean",
           "default": true,
           "description": "Right-align numeric table cells (integers and decimals), like Cucumber Official / Excel."
+        },
+        "bddGherkinFormat.alignTablesOnType": {
+          "type": "boolean",
+          "default": true,
+          "description": "Realign the table as you type `|`. Needs editor.formatOnType (on by default for Gherkin)."
+        },
+        "bddGherkinFormat.tableTabNavigation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Tab / Shift+Tab move between table cells and realign the table. Tab on the last cell adds a row."
         },
         "bddGherkinFormat.keywordSpacing": {
           "type": "boolean",

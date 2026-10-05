@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.9.0] — 2026-10-05
+
+### Added
+
+- Tab / Shift+Tab move between table cells and realign the table; Tab on the last cell adds a row. Yields to completion, inline suggestions, snippets, multi-line selections, and Tab-moves-focus. Setting `tableTabNavigation`
+- Align as you type: closing a cell with `|` pads its column without moving the caret. Setting `alignTablesOnType`; `editor.formatOnType` is on by default for `[gherkin]`
+- Paste as Table: TSV from Excel or Google Sheets, or CSV with `,` or `;`, becomes an aligned Gherkin table. Quoted cells, embedded pipes (`\|`), and line breaks (`\n`) are handled. Pasting inside a table appends rows
+- Copy Table for Excel: TSV that pastes back into the same grid
+- Column commands: insert left / right, move left / right, delete; sort rows by column (header row fixed, numbers by value)
+- **Gherkin Table** submenu in the editor context menu
+
+### Changed
+
+- Parse cache shared by structure providers and table commands
+
 ## [0.8.2] — 2026-10-05
 
 ### Changed

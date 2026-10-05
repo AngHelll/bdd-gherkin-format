@@ -4,27 +4,9 @@
  */
 
 import * as vscode from 'vscode';
-import {
-  parseDocument,
-  placeholderHighlights,
-  selectionRangesAt,
-  type GherkinBlock,
-  type ParsedDocument,
-} from '../core/structure';
+import { placeholderHighlights, selectionRangesAt, type GherkinBlock } from '../core/structure';
 import { formattingDocumentSelector } from './gherkinFormattingProvider';
-
-const parseCache = new Map<string, { version: number; parsed: ParsedDocument }>();
-
-function parsed(document: vscode.TextDocument): ParsedDocument {
-  const key = document.uri.toString();
-  const hit = parseCache.get(key);
-  if (hit && hit.version === document.version) {
-    return hit.parsed;
-  }
-  const fresh = parseDocument(document.getText());
-  parseCache.set(key, { version: document.version, parsed: fresh });
-  return fresh;
-}
+import { parsed, registerParseCache } from './parseCache';
 
 function symbolKind(kind: GherkinBlock['kind']): vscode.SymbolKind {
   switch (kind) {
@@ -68,9 +50,8 @@ function foldingRanges(blocks: GherkinBlock[], into: vscode.FoldingRange[]): voi
 }
 
 export function registerStructureProviders(context: vscode.ExtensionContext): void {
+  registerParseCache(context);
   context.subscriptions.push(
-    vscode.workspace.onDidCloseTextDocument((document) => parseCache.delete(document.uri.toString())),
-    { dispose: () => parseCache.clear() },
     vscode.languages.registerDocumentSymbolProvider(formattingDocumentSelector, {
       provideDocumentSymbols(document) {
         return parsed(document).blocks.map((block) => toSymbol(document, block));

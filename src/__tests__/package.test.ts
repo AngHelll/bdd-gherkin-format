@@ -35,6 +35,26 @@ describe('extension boundaries', () => {
     }
   });
 
+  it('binds Tab in tables only where it cannot steal completion, snippets, or indent', () => {
+    const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as {
+      contributes: { keybindings: { key: string; when: string }[] };
+    };
+    const tabs = pkg.contributes.keybindings.filter((binding) => /^(shift\+)?tab$/.test(binding.key));
+    expect(tabs).toHaveLength(2);
+    for (const binding of tabs) {
+      for (const guard of [
+        'bddGherkinFormat.inTableRow',
+        '!suggestWidgetVisible',
+        '!inlineSuggestionVisible',
+        '!inSnippetMode',
+        '!editorTabMovesFocus',
+        'config.bddGherkinFormat.tableTabNavigation',
+      ]) {
+        expect(binding.when).toContain(guard);
+      }
+    }
+  });
+
   it('keeps the ForgeOne pack in a separate manifest', () => {
     const pack = JSON.parse(readFileSync(join(root, 'extension-pack/package.json'), 'utf8')) as {
       extensionPack: string[];

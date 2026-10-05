@@ -10,7 +10,7 @@ VS Code / Cursor extension: **mute presentation** for `.feature` files —
 | | |
 |--|--|
 | **Marketplace** | `anghelll.bdd-gherkin-format` |
-| **Version** | **0.8.0** |
+| **Version** | **0.9.0** |
 | **Publisher** | anghelll |
 
 ## Why a separate extension?
@@ -60,6 +60,17 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 - `# language:` selects keyword dialect `en` (default), `es`, or `pt`
 - Language id `gherkin` for `.feature` (works even without Guardian)
 
+## Tables like a spreadsheet
+
+- **Tab / Shift+Tab** move between cells and realign the table; Tab on the last cell adds a row. Tab keeps its usual job when a completion, an inline suggestion (Copilot), or a snippet is active
+- **Align as you type** — closing a cell with `|` pads the column without moving the caret
+- **Paste as Table** — paste a range copied from Excel, Google Sheets, or a CSV (`,` or `;`) as an aligned Gherkin table. Pasting inside a table appends rows. Pipes and line breaks in cells become `\|` and `\n`
+- **Copy Table for Excel** — the table under the caret goes to the clipboard as TSV
+- **Columns** — insert left / right, move left / right, delete
+- **Sort rows** by the column under the caret, ascending or descending, numbers by value. The first row is treated as the header and stays put
+
+All of these live in the editor context menu under **Gherkin Table** and in the Command Palette (`Gherkin:`).
+
 ## What it does **not** do
 
 - Index or validate step bindings (no bound/unbound colors — that is Guardian)
@@ -75,6 +86,8 @@ Disable formatting with `bddGherkinFormat.enabled: false` (highlighting stays).
 | `bddGherkinFormat.enabled` | `true` | Enable Format Document / Selection |
 | `bddGherkinFormat.indentSize` | `null` | Spaces per indent unit. `null` uses the editor tab size (Gherkin defaults to 2) |
 | `bddGherkinFormat.alignNumbers` | `true` | Right-align numeric table cells (integers and decimals) |
+| `bddGherkinFormat.alignTablesOnType` | `true` | Realign the table when you type `\|` (uses `editor.formatOnType`, on by default for Gherkin) |
+| `bddGherkinFormat.tableTabNavigation` | `true` | Tab / Shift+Tab move between table cells |
 | `bddGherkinFormat.keywordSpacing` | `false` | One space after a step keyword, and `: ` before a title |
 | `bddGherkinFormat.alignStepKeywords` | `false` | Pad step keywords so the step text shares a column |
 | `bddGherkinFormat.tagLayout` | `preserve` | `onePerLine` puts each `@tag` on its own line |

@@ -5,6 +5,7 @@ import {
 } from './providers/gherkinFormattingProvider';
 import { registerStructureProviders } from './providers/gherkinStructureProviders';
 import { insertTableRow, registerTableRowContext } from './providers/insertTableRow';
+import { registerTableCommands } from './providers/tableCommands';
 
 export function activate(context: vscode.ExtensionContext): void {
   const provider = new GherkinFormattingProvider();
@@ -22,6 +23,7 @@ export function activate(context: vscode.ExtensionContext): void {
   );
   registerStructureProviders(context);
   registerTableRowContext(context);
+  registerTableCommands(context);
 }
 
 export function deactivate(): void {

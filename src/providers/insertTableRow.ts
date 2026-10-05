@@ -5,32 +5,47 @@
 import * as vscode from 'vscode';
 import { tableRowSkeleton } from '../core/alignTables';
 
-const CONTEXT_KEY = 'bddGherkinFormat.caretAtTableRowEnd';
+const AT_ROW_END_KEY = 'bddGherkinFormat.caretAtTableRowEnd';
+const IN_ROW_KEY = 'bddGherkinFormat.inTableRow';
 const TABLE_ROW = /^\s*\|/;
 
 function isGherkin(document: vscode.TextDocument): boolean {
   return document.languageId === 'gherkin' || document.languageId === 'feature';
 }
 
+export function caretInTableRow(editor: vscode.TextEditor | undefined): editor is vscode.TextEditor {
+  if (
+    !editor ||
+    !isGherkin(editor.document) ||
+    editor.selections.length !== 1 ||
+    !editor.selection.isSingleLine
+  ) {
+    return false;
+  }
+  return TABLE_ROW.test(editor.document.lineAt(editor.selection.active.line).text);
+}
+
 function caretAtTableRowEnd(editor: vscode.TextEditor | undefined): boolean {
-  if (!editor || !isGherkin(editor.document) || editor.selections.length !== 1) {
+  if (!caretInTableRow(editor) || !editor.selection.isEmpty) {
     return false;
   }
-  const { selection } = editor;
-  if (!selection.isEmpty) {
-    return false;
-  }
-  const text = editor.document.lineAt(selection.active.line).text;
-  return TABLE_ROW.test(text) && selection.active.character >= text.trimEnd().length;
+  const text = editor.document.lineAt(editor.selection.active.line).text;
+  return editor.selection.active.character >= text.trimEnd().length;
 }
 
 export function registerTableRowContext(context: vscode.ExtensionContext): void {
-  let current = false;
+  let inRow = false;
+  let atEnd = false;
   const update = (editor: vscode.TextEditor | undefined): void => {
-    const next = caretAtTableRowEnd(editor);
-    if (next !== current) {
-      current = next;
-      void vscode.commands.executeCommand('setContext', CONTEXT_KEY, next);
+    const nextInRow = caretInTableRow(editor);
+    const nextAtEnd = nextInRow && caretAtTableRowEnd(editor);
+    if (nextInRow !== inRow) {
+      inRow = nextInRow;
+      void vscode.commands.executeCommand('setContext', IN_ROW_KEY, nextInRow);
+    }
+    if (nextAtEnd !== atEnd) {
+      atEnd = nextAtEnd;
+      void vscode.commands.executeCommand('setContext', AT_ROW_END_KEY, nextAtEnd);
     }
   };
   context.subscriptions.push(

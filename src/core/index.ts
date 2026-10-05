@@ -35,3 +35,22 @@ export {
   type ParsedDocument,
 } from './structure';
 export { minimalEdit, type MinimalEdit } from './minimalEdit';
+export {
+  tableAt,
+  cellIndexAt,
+  renderTable,
+  navigateCell,
+  alignTableAt,
+  insertColumn,
+  deleteColumn,
+  moveColumn,
+  sortByColumn,
+  alignOnTypeEdits,
+  parseDelimited,
+  tableToTsv,
+  type TableBlock,
+  type TableRewrite,
+  type CellSelection,
+  type CellEdit,
+  type TableEditOptions,
+} from './tableEdit';
