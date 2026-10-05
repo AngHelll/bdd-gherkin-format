@@ -4,3 +4,7 @@
 # VSCE_PAT=...
 
 VSCE_PAT=
+
+# Open VSX access token (namespace anghelll). Not the Marketplace PAT.
+# Create at: https://open-vsx.org/user-settings/tokens
+OVSX_PAT=

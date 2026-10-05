@@ -28,6 +28,15 @@ echo "-- vsce publish --"
 npx @vscode/vsce publish --no-dependencies --packagePath bdd-gherkin-format.vsix
 
 echo ""
+echo "-- ovsx publish (same VSIX) --"
+if [[ ! -f bdd-gherkin-format.vsix ]]; then
+  echo "error: bdd-gherkin-format.vsix not found after package" >&2
+  exit 1
+fi
+npx ovsx publish bdd-gherkin-format.vsix
+
+echo ""
 echo "Published. Verify:"
 echo "  https://marketplace.visualstudio.com/items?itemName=anghelll.bdd-gherkin-format"
+echo "  https://open-vsx.org/extension/anghelll/bdd-gherkin-format"
 echo ""
