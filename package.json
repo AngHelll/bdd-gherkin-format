@@ -2,7 +2,7 @@
   "name": "bdd-gherkin-format",
   "displayName": "BDD Gherkin Format",
   "description": "Mute presentation for .feature files — Format Document + syntax highlighting. No binding index. Companion to BDD Guardian.",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "publisher": "anghelll",
   "icon": "icon.png",
   "galleryBanner": {
@@ -152,11 +152,13 @@
     "test:watch": "vitest",
     "package": "npx @vscode/vsce package --no-dependencies -o bdd-gherkin-format.vsix",
     "generate:grammar": "node scripts/generate-grammar-keywords.mjs",
+    "icon:export": "node scripts/export-marketplace-icon.js",
     "verify:local": "bash scripts/verify-local.sh",
     "publish:check": "bash scripts/publish-check.sh",
     "publish:marketplace": "bash scripts/publish-marketplace.sh"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",

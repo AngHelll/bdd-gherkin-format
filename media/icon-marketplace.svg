@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="BDD Gherkin Format">
+  <!-- Marketplace tile: same silhouette as media/format.svg (24x24) with fixed fills -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a2332"/>
+      <stop offset="100%" stop-color="#0d1219"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="22" fill="url(#bg)"/>
+  <!-- Content box ~15% margin - 24 units mapped into 90x90 centered -->
+  <g transform="translate(19, 19) scale(3.75)" fill="#e8eef6" stroke="#e8eef6">
+    <g fill="none" stroke="#e8eef6" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke-width="1.35" d="M14.4 3.2H7.1a1.6 1.6 0 0 0-1.6 1.6v14.4a1.6 1.6 0 0 0 1.6 1.6h9.8a1.6 1.6 0 0 0 1.6-1.6V7.3l-4.1-4.1z"/>
+      <path stroke-width="1.2" d="M14.4 3.2v4.1h4.1"/>
+      <path stroke-width="1.2" d="M9.9 8.1h2.6M10.3 11h5.6"/>
+      <path stroke-width="1" d="M8.4 13.9v4.4M12 13.9v4.4M15.6 13.9v4.4"/>
+      <path stroke-width="0.8" d="M9.8 15.1h0.8M13.4 15.1h0.8M9.8 17.1h0.8M13.4 17.1h0.8"/>
+    </g>
+    <circle cx="8.3" cy="8.1" r="1" fill="#e8eef6" stroke="none"/>
+  </g>
+</svg>

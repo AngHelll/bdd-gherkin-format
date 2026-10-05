@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2] — 2026-10-05
+
+### Changed
+
+- Own Marketplace icon (document, indent steps, aligned table) instead of the Guardian shield. Same ForgeOne tile and stroke system; source in `media/icon-marketplace.svg`, exported with `npm run icon:export`
+- ForgeOne pack (`extension-pack/`) gets its own icon, README, and repository metadata for Marketplace
+
 ## [0.8.1] — 2026-09-28
 
 ### Performance

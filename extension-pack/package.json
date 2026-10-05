@@ -4,10 +4,22 @@
   "description": "Presentation plus the step map: BDD Gherkin Format and BDD Guardian. Pilot and Jarvis stay optional.",
   "version": "0.1.0",
   "publisher": "anghelll",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1a2332",
+    "theme": "dark"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AngHelll/bdd-gherkin-format.git",
+    "directory": "extension-pack"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": ["Extension Packs"],
+  "keywords": ["gherkin", "bdd", "cucumber", "reqnroll", "specflow", "feature"],
   "extensionPack": [
     "anghelll.bdd-gherkin-format",
     "anghelll.bdd-guardian"

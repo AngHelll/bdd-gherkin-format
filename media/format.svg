@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="BDD Gherkin Format">
+  <!-- Document (feature) + indent steps + aligned table columns - same silhouette as icon-marketplace.svg -->
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="1.35" d="M14.4 3.2H7.1a1.6 1.6 0 0 0-1.6 1.6v14.4a1.6 1.6 0 0 0 1.6 1.6h9.8a1.6 1.6 0 0 0 1.6-1.6V7.3l-4.1-4.1z"/>
+    <path stroke-width="1.2" d="M14.4 3.2v4.1h4.1"/>
+    <path stroke-width="1.2" d="M9.9 8.1h2.6M10.3 11h5.6"/>
+    <path stroke-width="1" d="M8.4 13.9v4.4M12 13.9v4.4M15.6 13.9v4.4"/>
+    <path stroke-width="0.8" d="M9.8 15.1h0.8M13.4 15.1h0.8M9.8 17.1h0.8M13.4 17.1h0.8"/>
+  </g>
+  <circle cx="8.3" cy="8.1" r="1" fill="currentColor"/>
+</svg>
